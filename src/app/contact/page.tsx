@@ -3,13 +3,13 @@ import type { Metadata } from "next";
 import { Container } from "@/components/layout/Container";
 import { ContactForm } from "@/features/contact/components/ContactForm";
 import { SITE_CONFIG } from "@/lib/constants/site";
-import { MapPin, Phone, Mail, Clock, MessageSquare, ShieldCheck, Sparkles } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, MessageSquare, ExternalLink, Navigation, Sparkles } from "lucide-react";
 import { CantingIcon } from "@/components/svg";
 
 export const metadata: Metadata = {
-  title: "Kontak & Showroom Atelier — Reservasi & Konsultasi",
+  title: "Kontak & Workshop Jatiranggon Bekasi — FuRi Valentine Batik",
   description:
-    "Hubungi concierge FuRi Valentine Batik untuk reservasi kunjungan showroom Menteng Jakarta atau pemesanan kustom batik pernikahan & korporasi.",
+    "Hubungi Ibu Indah Turiri / FuRi Valentine Batik di Jatiranggon Jatisampurna Kota Bekasi untuk konsultasi motif, pemesanan seragam dinas, atau reservasi galeri.",
 };
 
 export default function ContactPage() {
@@ -20,13 +20,13 @@ export default function ContactPage() {
         <div className="max-w-3xl mx-auto text-center mb-16">
           <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-3.5 py-1 text-xs font-semibold text-amber-900 mb-3">
             <CantingIcon className="h-4 w-4 text-amber-700" />
-            Layanan Concierge Personal
+            Layanan Pelanggan & Kemitraan UMKM
           </div>
           <h1 className="text-3xl sm:text-5xl font-extrabold text-stone-900 leading-tight">
-            Terhubung Bersama Atelier FuRi Valentine.
+            Hubungi Workshop & Galeri FuRi Valentine
           </h1>
           <p className="mt-4 text-stone-600 text-sm sm:text-base leading-relaxed">
-            Baik untuk memilih busana formal kenegaraan, bingkisan romantis edisi Valentine, maupun pesanan seragam keluarga istimewa, tim kurator wastra kami siap mendampingi Anda.
+            Silakan berkonsultasi mengenai pemesanan seragam batik dinas/kantor, kain batik tulis halus, atau berkunjung langsung ke workshop kami di Jatisampurna, Kota Bekasi.
           </p>
         </div>
 
@@ -35,7 +35,7 @@ export default function ContactPage() {
           <div className="lg:col-span-5 space-y-6">
             <div className="rounded-3xl border border-stone-200 bg-white p-7 shadow-sm space-y-6">
               <h3 className="text-xl font-bold text-stone-900 border-b border-stone-100 pb-3">
-                Informasi Galeri & Showroom
+                Informasi Workshop & Galeri
               </h3>
 
               <div className="space-y-4 text-sm text-stone-600">
@@ -45,7 +45,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <strong className="block text-stone-900 font-semibold text-xs uppercase tracking-wide">
-                      Alamat Showroom Utama
+                      Alamat Workshop & Galeri
                     </strong>
                     <span className="text-xs leading-relaxed">{SITE_CONFIG.contact.address}</span>
                   </div>
@@ -57,7 +57,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <strong className="block text-stone-900 font-semibold text-xs uppercase tracking-wide">
-                      Jam Layanan Atelier
+                      Jam Layanan
                     </strong>
                     <span className="text-xs leading-relaxed">{SITE_CONFIG.contact.hours}</span>
                   </div>
@@ -81,23 +81,48 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <strong className="block text-stone-900 font-semibold text-xs uppercase tracking-wide">
-                      Email Concierge
+                      Email
                     </strong>
                     <span className="text-xs leading-relaxed">{SITE_CONFIG.contact.email}</span>
                   </div>
                 </div>
               </div>
+
+              {/* Direct Maps Link */}
+              <div className="pt-2 border-t border-stone-100">
+                <a
+                  href={SITE_CONFIG.contact.googleMapsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-amber-800 px-4 py-2.5 text-xs font-bold text-white hover:bg-amber-900 transition-colors"
+                >
+                  <Navigation className="h-4 w-4" />
+                  Buka Peta Petunjuk Arah Google Maps
+                  <ExternalLink className="h-3.5 w-3.5 opacity-80" />
+                </a>
+              </div>
             </div>
 
-            {/* Private Viewing Notice */}
-            <div className="rounded-3xl border border-amber-900/15 bg-amber-50/60 p-6 space-y-3">
-              <div className="flex items-center gap-2 text-amber-900 font-bold text-sm">
-                <Sparkles className="h-4 w-4 text-amber-700" />
-                <span>Protokol Private Viewing</span>
+            {/* Quick WhatsApp Chat Box */}
+            <div className="rounded-3xl border border-emerald-600/30 bg-emerald-50/60 p-6 space-y-3">
+              <div className="flex items-center gap-2 text-emerald-900 font-bold text-sm">
+                <MessageSquare className="h-4 w-4 text-emerald-700" />
+                <span>Konsultasi Cepat via WhatsApp</span>
               </div>
-              <p className="text-xs text-stone-600 leading-relaxed">
-                Demi kenyamanan optimal, kunjungan showroom disarankan dengan membuat reservasi terlebih dahulu agar kurator kami dapat menyiapkan kain dan motif sesuai preferensi Anda.
+              <p className="text-xs text-emerald-800/90 leading-relaxed">
+                Ingin respons paling cepat? Chat langsung dengan Ibu Indah Turiri untuk menanyakan contoh motif atau jadwal kunjungan ke workshop.
               </p>
+              <a
+                href={`https://wa.me/${SITE_CONFIG.contact.whatsapp}?text=${encodeURIComponent(
+                  "Halo Ibu Indah Turiri / FuRi Valentine Batik Bekasi, saya ingin berkonsultasi mengenai pemesanan batik."
+                )}`}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl bg-emerald-700 px-4 py-2.5 text-xs font-bold text-white hover:bg-emerald-800 transition-colors shadow-sm"
+              >
+                <MessageSquare className="h-3.5 w-3.5" />
+                Mulai Chat WhatsApp
+              </a>
             </div>
           </div>
 

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { SITE_CONFIG } from "@/lib/constants/site";
 import { MAIN_NAVIGATION, FOOTER_COLLECTIONS } from "@/lib/constants/navigation";
 import { FuRiLogo, KawungPattern } from "@/components/svg";
-import { MapPin, Phone, Mail } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, MessageSquare, ExternalLink } from "lucide-react";
 import { Container } from "./Container";
 
 export const Footer: React.FC = () => {
@@ -24,9 +24,13 @@ export const Footer: React.FC = () => {
               textColor="#FDFBF7"
               className="h-12 w-auto"
             />
-            <p className="text-sm text-stone-400 leading-relaxed max-w-sm">
+            <p className="text-xs sm:text-sm text-stone-400 leading-relaxed max-w-sm">
               {SITE_CONFIG.description}
             </p>
+            <div className="rounded-2xl bg-slate-900/80 border border-slate-800 p-4 text-xs text-stone-400 space-y-1">
+              <p className="text-amber-400 font-bold">UMKM Kota Bekasi — Berdiri Sejak 7 Juli 2007</p>
+              <p>Pendiri: <strong className="text-white">{SITE_CONFIG.founder}</strong> (Valentine Batik)</p>
+            </div>
             <div className="pt-2 flex items-center gap-3">
               <a
                 href={SITE_CONFIG.socials.instagram}
@@ -53,16 +57,13 @@ export const Footer: React.FC = () => {
                 </svg>
               </a>
               <a
-                href={SITE_CONFIG.socials.youtube}
+                href={`https://wa.me/${SITE_CONFIG.contact.whatsapp}`}
                 target="_blank"
                 rel="noreferrer"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800/80 text-amber-400 transition-colors hover:bg-amber-600 hover:text-white"
-                aria-label="YouTube"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-700/80 text-white transition-colors hover:bg-emerald-600"
+                aria-label="WhatsApp"
               >
-                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/>
-                  <polygon points="10 15 15 12 10 9 10 15" fill="currentColor"/>
-                </svg>
+                <MessageSquare className="h-4 w-4" />
               </a>
             </div>
           </div>
@@ -70,7 +71,7 @@ export const Footer: React.FC = () => {
           {/* Quick Links */}
           <div>
             <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-4">
-              Jelajahi Brand
+              Jelajahi Profil
             </h4>
             <ul className="space-y-2.5 text-xs">
               {MAIN_NAVIGATION.map((item) => (
@@ -86,10 +87,10 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Koleksi */}
+          {/* Kategori Ekspo */}
           <div>
             <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-4">
-              Kategori Koleksi
+              Koleksi & Layanan
             </h4>
             <ul className="space-y-2.5 text-xs">
               {FOOTER_COLLECTIONS.map((item) => (
@@ -108,7 +109,7 @@ export const Footer: React.FC = () => {
           {/* Contact Details */}
           <div>
             <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-4">
-              Atelier & Showroom
+              Workshop & Galeri
             </h4>
             <ul className="space-y-3 text-xs text-stone-400">
               <li className="flex items-start gap-2.5">
@@ -116,12 +117,23 @@ export const Footer: React.FC = () => {
                 <span>{SITE_CONFIG.contact.address}</span>
               </li>
               <li className="flex items-center gap-2.5">
+                <Clock className="h-4 w-4 text-amber-500 shrink-0" />
+                <span>{SITE_CONFIG.contact.hours}</span>
+              </li>
+              <li className="flex items-center gap-2.5">
                 <Phone className="h-4 w-4 text-amber-500 shrink-0" />
                 <span>{SITE_CONFIG.contact.phone}</span>
               </li>
-              <li className="flex items-center gap-2.5">
-                <Mail className="h-4 w-4 text-amber-500 shrink-0" />
-                <span>{SITE_CONFIG.contact.email}</span>
+              <li className="pt-1">
+                <a
+                  href={SITE_CONFIG.contact.googleMapsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 text-amber-400 font-semibold hover:underline"
+                >
+                  <span>Buka di Google Maps</span>
+                  <ExternalLink className="h-3 w-3" />
+                </a>
               </li>
             </ul>
           </div>
@@ -130,10 +142,10 @@ export const Footer: React.FC = () => {
         {/* Bottom Line */}
         <div className="mt-12 border-t border-slate-800/80 pt-6 text-center text-xs text-stone-500 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>
-            &copy; {new Date().getFullYear()} {SITE_CONFIG.name}. Hak Cipta Dilindungi Undang-Undang.
+            &copy; 2007 - {new Date().getFullYear()} {SITE_CONFIG.name} ({SITE_CONFIG.brandName}). Hak Cipta Dilindungi Undang-Undang.
           </p>
           <p className="text-[11px] text-stone-600">
-            Karya Luhur Warisan Nusantara • Ditenun & Dibatik dengan Jiwa
+            Pelopor Batik Motif Khas Kota Bekasi • UMKM Binaan Kota Patriot
           </p>
         </div>
       </Container>

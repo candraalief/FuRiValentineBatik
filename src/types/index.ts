@@ -1,4 +1,10 @@
-export type BatikCategory = "all" | "tulis" | "cap" | "valentine" | "men" | "fabric";
+export type BatikCategory =
+  | "all"
+  | "bekasi"
+  | "tulis"
+  | "cap"
+  | "seragam"
+  | "kain";
 
 export interface BatikProduct {
   id: string;
@@ -9,13 +15,24 @@ export interface BatikProduct {
   motif: string;
   material: string;
   origin: string;
-  price: number;
+  estimatedPrice: string;
   durationInDays: number;
   featured: boolean;
+  isCustomOrderAvailable: boolean;
   description: string;
   philosophy: string;
   accentColor: string;
   tags: string[];
+}
+
+export interface OrderingStep {
+  step: number;
+  title: string;
+  subtitle: string;
+  duration: string;
+  description: string;
+  actionHint: string;
+  iconName: string;
 }
 
 export interface CraftsmanshipStep {
@@ -31,7 +48,9 @@ export interface InquiryFormData {
   fullName: string;
   email: string;
   phone: string;
+  orderType?: string;
   collectionInterest: string;
+  quantity?: string;
   customRequirements?: string;
   message: string;
 }
