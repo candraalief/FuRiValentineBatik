@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="#C6923B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Silk / Textile bolt -->
+  <ellipse cx="14" cy="24" rx="6" ry="14" fill="#F4E8D1" stroke="#C6923B"/>
+  <path d="M14 10 H36 C39.3 10 42 16.3 42 24 C42 31.7 39.3 38 36 38 H14" fill="#FDFBF7"/>
+  <ellipse cx="36" cy="24" rx="6" ry="14" fill="#E8C37B" opacity="0.3"/>
+  <!-- Woven folds -->
+  <path d="M22 10 C 25 16 25 32 22 38"/>
+  <path d="M29 10 C 32 16 32 32 29 38"/>
+</svg>

@@ -1,26 +1,40 @@
 @import "tailwindcss";
 
+@theme {
+  --color-batik-gold: #c6923b;
+  --color-batik-gold-light: #e8c37b;
+  --color-batik-gold-dark: #9e6e20;
+  --color-batik-indigo: #152238;
+  --color-batik-indigo-light: #1e3250;
+  --color-batik-indigo-dark: #0c1523;
+  --color-batik-cream: #fdfbf7;
+  --color-batik-cream-dark: #f5eedf;
+  --color-batik-terracotta: #8b3a2b;
+  --color-batik-charcoal: #1a1a1a;
+  --color-batik-muted: #64748b;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #fdfbf7;
+  --foreground: #1a1a1a;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Batik Background helper */
+.bg-batik-pattern {
+  background-color: #152238;
+  background-image: radial-gradient(rgba(198, 146, 59, 0.12) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+.text-gold-gradient {
+  background: linear-gradient(135deg, #e8c37b 0%, #c6923b 50%, #9e6e20 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

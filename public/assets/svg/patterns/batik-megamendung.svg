@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="80" viewBox="0 0 120 80" fill="none">
+  <!-- Multi-layered cloud curves of Megamendung -->
+  <path d="M10 60 C 20 40, 45 45, 55 30 C 65 15, 90 20, 105 40 C 115 50, 110 60, 95 62 C 80 64, 75 55, 60 55 C 45 55, 30 65, 10 60 Z" stroke="#152238" stroke-width="2" fill="none" opacity="0.4"/>
+  <path d="M20 56 C 28 42, 48 46, 56 34 C 64 22, 84 26, 96 42 C 104 50, 98 56, 88 57 C 76 58, 70 51, 58 51 C 46 51, 34 59, 20 56 Z" stroke="#3A506B" stroke-width="2" fill="none" opacity="0.5"/>
+  <path d="M30 52 C 36 44, 50 47, 57 38 C 63 29, 78 32, 87 44 C 92 50, 88 53, 80 54 C 72 55, 66 49, 56 49 C 46 49, 38 54, 30 52 Z" stroke="#C6923B" stroke-width="2" fill="none" opacity="0.7"/>
+</svg>

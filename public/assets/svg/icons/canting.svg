@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none">
+  <!-- Canting: Bamboo handle, copper cup (nyamplung), and fine spout (cucuk) -->
+  <!-- Handle -->
+  <path d="M4 42 L22 24" stroke="#8B5A2B" stroke-width="4" stroke-linecap="round"/>
+  <!-- Copper Cup (Nyamplung) -->
+  <path d="M22 24 C 20 20, 24 14, 30 14 C 36 14, 40 20, 38 25 C 36 30, 26 30, 22 24 Z" fill="#C6923B" stroke="#9E6E20" stroke-width="1.5"/>
+  <!-- Cucuk (Spout) -->
+  <path d="M38 22 Q 44 20, 44 14" stroke="#9E6E20" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <!-- Hot Wax droplet -->
+  <circle cx="44" cy="11" r="2" fill="#E8C37B"/>
+</svg>
