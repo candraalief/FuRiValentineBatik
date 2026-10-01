@@ -1,34 +1,40 @@
 import type { Metadata } from "next";
+import { DM_Sans, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
 import { SITE_CONFIG } from "@/lib/constants/site";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
-import { WhatsAppCTA } from "@/features/contact/components/WhatsAppCTA";
+import { FigmaNavbar } from "@/components/figma/FigmaNavbar";
+import { FigmaFooter } from "@/components/figma/FigmaFooter";
+import { FloatingWhatsApp } from "@/components/figma/FloatingWhatsApp";
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-dm-sans",
+  weight: ["400", "500", "600", "700"],
+});
+
+const dmSerifDisplay = DM_Serif_Display({
+  subsets: ["latin"],
+  variable: "--font-dm-serif",
+  weight: ["400"],
+});
 
 export const metadata: Metadata = {
   title: {
-    default: `${SITE_CONFIG.name} — ${SITE_CONFIG.tagline}`,
-    template: `%s | ${SITE_CONFIG.name}`,
+    default: "FuRi Valentine Batik — Batik Bekasi, Pilihanmu",
+    template: "%s | FuRi Valentine Batik",
   },
-  description: SITE_CONFIG.description,
+  description:
+    "Showcases FuRi Valentine Batik products with visual catalogs, direct WhatsApp contact, location details, and easy booking for gallery visits in Bekasi.",
   keywords: [
     "FuRi Valentine Batik",
-    "Batik Tulis Sutra",
-    "Batik Cap Kontemporer",
-    "Batik Heritage Indonesia",
-    "Batik Mewah",
-    "Batik Solo Yogyakarta",
-    "Wastra Nusantara",
+    "Batik Bekasi",
+    "Batik Patriot",
+    "Batik Tulis Halus",
+    "Batik Cap",
+    "Batik Kantor",
+    "Batik Sekolah",
+    "Jatisampurna Bekasi",
   ],
-  authors: [{ name: "FuRi Valentine Batik" }],
-  openGraph: {
-    title: SITE_CONFIG.name,
-    description: SITE_CONFIG.description,
-    url: SITE_CONFIG.url,
-    siteName: SITE_CONFIG.name,
-    locale: "id_ID",
-    type: "website",
-  },
   icons: {
     icon: "/assets/svg/brand/favicon.svg",
   },
@@ -40,12 +46,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className="scroll-smooth">
-      <body className="min-h-screen flex flex-col bg-[#FDFBF7] text-[#1A1A1A] antialiased">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <WhatsAppCTA />
+    <html lang="id" className={`scroll-smooth ${dmSans.variable} ${dmSerifDisplay.variable}`}>
+      <body className="min-h-screen text-[#10233f] antialiased">
+        <FigmaNavbar />
+        {children}
+        <FigmaFooter />
+        <FloatingWhatsApp />
       </body>
     </html>
   );

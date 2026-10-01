@@ -1,40 +1,321 @@
 @import "tailwindcss";
 
 @theme {
-  --color-batik-gold: #c6923b;
-  --color-batik-gold-light: #e8c37b;
-  --color-batik-gold-dark: #9e6e20;
-  --color-batik-indigo: #152238;
-  --color-batik-indigo-light: #1e3250;
-  --color-batik-indigo-dark: #0c1523;
-  --color-batik-cream: #fdfbf7;
-  --color-batik-cream-dark: #f5eedf;
-  --color-batik-terracotta: #8b3a2b;
-  --color-batik-charcoal: #1a1a1a;
-  --color-batik-muted: #64748b;
+  --color-brand-rose: #c51f5d;
+  --color-brand-rose-hover: #a7194d;
+  --color-brand-gold: #d8ab5d;
+  --color-brand-gold-hover: #eccf9e;
+  --color-brand-navy: #10233f;
+  --color-brand-navy-dark: #0b172a;
+  --color-brand-blue-soft: #e7f1ff;
+  --color-brand-cream: #f6f0e5;
+
+  --font-serif: var(--font-dm-serif), Georgia, serif;
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
 }
 
-:root {
-  --background: #fdfbf7;
-  --foreground: #1a1a1a;
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background-color: #faf8f5;
+  background-image: 
+    linear-gradient(45deg, transparent 46%, rgba(16, 35, 63, 0.025) 47% 53%, transparent 54%),
+    linear-gradient(-45deg, transparent 46%, rgba(197, 31, 93, 0.02) 47% 53%, transparent 54%);
+  background-size: 36px 36px;
+  background-repeat: repeat;
+  margin: 0;
+  font-family: var(--font-dm-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #10233f;
   overflow-x: hidden;
 }
 
-/* Custom Batik Background helper */
-.bg-batik-pattern {
-  background-color: #152238;
-  background-image: radial-gradient(rgba(198, 146, 59, 0.12) 1px, transparent 0);
-  background-size: 24px 24px;
+button, a, input, select, textarea {
+  outline-color: #c51f5d;
 }
 
-.text-gold-gradient {
-  background: linear-gradient(135deg, #e8c37b 0%, #c6923b 50%, #9e6e20 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee {
+  display: flex;
+  min-width: max-content;
+  animation: marquee 26s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .marquee {
+    animation: none;
+  }
+}
+
+/* Custom Components & Utilities from Figma Make */
+.section-shell {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding: 3rem 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .section-shell {
+    padding-block: 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-shell {
+    padding-block: 5rem;
+    padding-inline: 2.5rem;
+  }
+}
+
+.eyebrow {
+  color: #c51f5d;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.5;
+  display: flex;
+}
+
+.section-title {
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  margin-top: 0.75rem;
+  font-family: var(--font-dm-serif), Georgia, serif;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  line-height: 1.15;
+}
+
+/* Button Styles */
+.button-primary,
+.button-outline,
+.button-ghost,
+.button-gold,
+.button-dark-outline {
+  border-radius: 9999px;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.5rem;
+  transition: all 0.2s;
+  display: inline-flex;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button-primary {
+  color: #fff;
+  background: #c51f5d;
+  border: none;
+}
+
+.button-primary:hover {
+  background: #a7194d;
+  transform: translateY(-2px);
+}
+
+.button-outline {
+  color: #10233f;
+  background: transparent;
+  border: 1px solid rgba(42, 29, 26, 0.25);
+}
+
+.button-outline:hover {
+  color: #c51f5d;
+  border-color: #c51f5d;
+}
+
+.button-ghost {
+  color: #10233f;
+  background: transparent;
+  border: none;
+}
+
+.button-ghost:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.button-gold {
+  color: #10233f;
+  background: #d8ab5d;
+  border: none;
+}
+
+.button-gold:hover {
+  background: #eccf9e;
+  transform: translateY(-2px);
+}
+
+.button-dark-outline {
+  color: #fff;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.button-dark-outline:hover {
+  border-color: #fff;
+}
+
+.button-large {
+  min-height: 3rem;
+  padding: 0.75rem 1.5rem;
+}
+
+.button-primary:focus-visible,
+.button-outline:focus-visible,
+.button-ghost:focus-visible,
+.button-gold:focus-visible,
+.button-dark-outline:focus-visible,
+.contact-pill:focus-visible,
+.floating-wa:focus-visible {
+  outline-style: solid;
+  outline-offset: 4px;
+  outline-width: 2px;
+  outline-color: #c51f5d;
+}
+
+/* Nav Link */
+.nav-link {
+  padding: 0.5rem 0;
+  position: relative;
+  color: #10233f;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-link:after {
+  content: "";
+  background: #c51f5d;
+  height: 2px;
+  transition: transform 0.2s;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transform: scaleX(0);
+}
+
+.nav-link:hover {
+  color: #c51f5d;
+}
+
+.nav-link:hover:after {
+  transform: scaleX(1);
+}
+
+/* Contact Pill */
+.contact-pill {
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 9999px;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.5rem;
+  transition: background 0.2s;
+  display: inline-flex;
+  text-decoration: none;
+}
+
+.contact-pill:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Form Styles */
+.form-label {
+  color: #46566e;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.5;
+  display: block;
+}
+
+.form-input {
+  color: #10233f;
+  background: #fff;
+  border: 1px solid rgba(42, 29, 26, 0.15);
+  border-radius: 0.75rem;
+  width: 100%;
+  min-height: 3rem;
+  margin-top: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+  display: block;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus {
+  border-color: #c51f5d;
+  box-shadow: 0 0 0 3px rgba(197, 31, 93, 0.08);
+}
+
+/* Icon Box */
+.icon-box {
+  color: #d8ab5d;
+  border: 1px solid rgba(216, 171, 93, 0.35);
+  border-radius: 9999px;
+  flex: none;
+  justify-content: center;
+  align-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: flex;
+}
+
+/* Floating WhatsApp */
+.floating-wa {
+  z-index: 60;
+  color: #fff;
+  background: #1fa855;
+  border: 2px solid #fff;
+  border-radius: 9999px;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 3.25rem;
+  padding: 0.8rem 1rem 0.8rem 1.2rem;
+  font-size: 0.875rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  box-shadow: 0 12px 35px rgba(21, 86, 47, 0.35);
+  text-decoration: none;
+}
+
+.floating-wa:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(21, 86, 47, 0.45);
+}
+
+/* Batik Decorative Mark */
+.batik-mark {
+  background-image: repeating-radial-gradient(circle at 50% 100%, transparent 0 17px, #c51f5d 18px 20px);
+  transform: rotate(25deg);
 }
