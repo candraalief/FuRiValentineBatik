@@ -182,25 +182,25 @@ function App() {
 
       <main>
         {/* ─── Hero ─── */}
-        <section className="relative pt-20" id="beranda">
+        <section className="relative pt-20 border-b border-[#10233f]/10 lg:border-b-0" id="beranda">
           <div className="absolute bottom-0 right-0 top-20 hidden w-[43%] bg-[#10233f] lg:block" />
           <div className="batik-mark absolute left-0 top-40 size-64 opacity-[0.06]" />
-          <div className="relative mx-auto grid max-w-7xl gap-8 px-5 py-10 sm:py-12 lg:grid-cols-[1.04fr_0.96fr] lg:gap-10 lg:px-10 lg:py-16">
+          <div className="relative mx-auto grid max-w-7xl gap-6 sm:gap-8 px-5 py-8 sm:py-12 lg:grid-cols-[1.04fr_0.96fr] lg:gap-10 lg:px-10 lg:py-16">
             <div className="z-10 flex flex-col justify-center">
               <p className="eyebrow"><Icon name="sparkle" size={16} /> Karya Wastra & Batik Custom</p>
-              <h1 className="mt-4 max-w-3xl font-serif text-[clamp(2.75rem,5.5vw,4.5rem)] leading-[1.08] tracking-[-0.01em]">
+              <h1 className="mt-3 sm:mt-4 max-w-3xl font-serif text-[2.25rem] sm:text-[clamp(2.75rem,5.5vw,4.5rem)] leading-[1.12] sm:leading-[1.08] tracking-[-0.01em]">
                 Batik Bekasi,<br />
                 <span className="italic text-[#c51f5d]">pilihanmu.</span>
               </h1>
-              <p className="mt-6 max-w-xl text-sm sm:text-base leading-relaxed text-[#2d3f57] font-normal">
+              <p className="mt-4 sm:mt-6 max-w-xl text-xs sm:text-base leading-relaxed text-[#2d3f57] font-normal">
                 <strong className="font-semibold text-[#10233f]">FuRI Valentine Batik</strong> menyediakan seragam batik sekolah, seragam kantor, Atasan Wanita, Hem , Kemeja, Bahan Batik, Udeng, Scarf, dll
               </p>
             </div>
-            <div className="relative min-h-[420px] sm:min-h-[480px] lg:min-h-[530px]">
-              <div className="absolute left-0 top-0 h-[90%] sm:h-[88%] w-[72%] sm:w-[74%] overflow-hidden rounded-t-[5.5rem] sm:rounded-t-[9rem] border-[10px] border-white bg-white shadow-2xl shadow-[#091426]/20">
+            <div className="relative min-h-[360px] sm:min-h-[480px] lg:min-h-[530px]">
+              <div className="absolute left-0 top-0 h-[92%] sm:h-[88%] w-[72%] sm:w-[74%] overflow-hidden rounded-t-[5rem] sm:rounded-t-[9rem] border-[8px] sm:border-[10px] border-white bg-white shadow-2xl shadow-[#091426]/20">
                 <img className="h-full w-full object-contain sm:object-cover object-center sm:object-top" src="/images/batik_04.webp" alt="Busana Tunik Batik FuRi Valentine" />
               </div>
-              <div className="absolute bottom-0 right-0 h-[54%] sm:h-[60%] w-[54%] sm:w-[56%] overflow-hidden rounded-2xl border-[9px] border-white bg-[#091426] shadow-2xl shadow-[#091426]/30">
+              <div className="absolute bottom-0 right-0 h-[56%] sm:h-[60%] w-[56%] sm:w-[56%] overflow-hidden rounded-2xl border-[7px] sm:border-[9px] border-white bg-[#091426] shadow-2xl shadow-[#091426]/30">
                 <img className="h-full w-full object-cover object-center scale-110" src="/images/batik_14_hero.webp" alt="Kain Batik Sutra Motif Burung Bangau dan Teratai" />
               </div>
               <div className="absolute bottom-[4%] sm:bottom-[8%] left-[1%] sm:left-[2%] z-10 flex size-24 sm:size-32 rotate-[-8deg] flex-col items-center justify-center rounded-full bg-[#d8ab5d] text-center shadow-xl">
@@ -212,7 +212,7 @@ function App() {
         </section>
 
         {/* ─── Marquee ─── */}
-        <section className="bg-[#10233f] py-4 text-[#f6f0e5]">
+        <section className="bg-[#10233f] py-3.5 sm:py-4 text-[#f6f0e5] shadow-xs">
           <div className="marquee flex min-w-max items-center gap-8 text-xs font-bold uppercase tracking-[0.3em]">
             {["Koleksi Busana Jadi", "Batik Custom", "Pesanan Satuan", "Pesanan Bulk", "Kain Bahan", "Koleksi Busana Jadi"].map((item, index) => (
               <span className="flex items-center gap-8" key={`${item}-${index}`}>{item}<span className="text-[#d8ab5d]">◆</span></span>
@@ -221,8 +221,8 @@ function App() {
         </section>
 
         {/* ─── Koleksi FuRi Valentine Batik — Dual-Row Infinite Looping Marquee ─── */}
-        <section className="py-12 sm:py-16 scroll-mt-20 overflow-hidden" id="koleksi">
-          <div className="mx-auto max-w-7xl px-5 text-center sm:px-10 mb-8 sm:mb-10">
+        <section className="py-10 sm:py-16 scroll-mt-20 overflow-hidden" id="koleksi">
+          <div className="mx-auto max-w-7xl px-5 text-center sm:px-10 mb-6 sm:mb-10">
             <p className="eyebrow justify-center"><span className="h-px w-8 bg-[#c51f5d]" /> Busana & Kain Batik</p>
             <h2 className="section-title">Koleksi FuRi Valentine Batik</h2>
             <p className="mx-auto mt-2 max-w-xl text-xs sm:text-sm text-[#52627a]">
@@ -235,12 +235,12 @@ function App() {
         </section>
 
         {/* ─── Batik Kantor & Sekolah — 3 Kolom Showcase ─── */}
-        <section className="border-y border-[#10233f]/10 bg-white/45 scroll-mt-20" id="batik-kantor-sekolah">
-          <div className="section-shell">
-            <div className="text-center mb-8">
+        <section className="border-y border-[#10233f]/10 bg-white/80 sm:bg-white/45 scroll-mt-20 shadow-xs" id="batik-kantor-sekolah">
+          <div className="section-shell py-8 sm:py-12">
+            <div className="text-center mb-6 sm:mb-8">
               <p className="eyebrow justify-center"><span className="h-px w-8 bg-[#c51f5d]" /> Pengadaan Seragam</p>
               <h2 className="section-title">Batik Kantor dan Sekolah</h2>
-              <p className="mx-auto mt-2 max-w-xl text-sm text-[#52627a]">
+              <p className="mx-auto mt-2 max-w-xl text-xs sm:text-sm text-[#52627a]">
                 Pengadaan seragam batik untuk instansi pemerintah, korporat swasta, dan lembaga pendidikan.
               </p>
             </div>
@@ -249,38 +249,46 @@ function App() {
         </section>
 
         {/* ─── Workshop & Galeri ─── */}
-        <section className="section-shell" id="galeri">
+        <section className="section-shell py-8 sm:py-12 my-2 sm:my-0" id="galeri">
           <div className="mb-6 text-center sm:mb-8">
             <p className="eyebrow justify-center"><span className="h-px w-8 bg-[#c51f5d]" /> Workshop & Galeri</p>
             <h2 className="section-title">Lihat bahan dan sampel langsung.</h2>
           </div>
-          <div className="grid overflow-hidden rounded-[2rem] bg-[#10233f] text-white shadow-2xl shadow-[#10233f]/15 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="relative min-h-[300px] sm:min-h-[380px] bg-slate-900 overflow-hidden">
+          <div className="grid overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] bg-[#10233f] text-white shadow-2xl shadow-[#10233f]/15 lg:grid-cols-[1.1fr_0.9fr] border border-[#10233f]/10">
+            <div className="relative min-h-[240px] sm:min-h-[380px] bg-slate-900 overflow-hidden">
               <img className="absolute inset-0 h-full w-full object-cover opacity-75 blur-[1.5px] scale-105" src="/images/workshop_gallery.webp" alt="Workshop & Galeri FuRi Valentine Batik" />
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#10233f]/75" />
-                <div className="absolute bottom-8 left-8 rounded-xl bg-white p-5 text-[#10233f] shadow-xl">
+              <div className="absolute inset-0 bg-gradient-to-t from-[#10233f] via-transparent to-transparent sm:bg-gradient-to-r sm:from-transparent sm:to-[#10233f]/75" />
+              
+              {/* Desktop floating map card */}
+              <div className="hidden sm:block absolute bottom-8 left-8 rounded-xl bg-white p-5 text-[#10233f] shadow-xl">
                 <Icon name="map" size={28} />
                 <p className="mt-3 text-xs font-bold uppercase tracking-[0.2em] text-[#c51f5d]">Workshop & Galeri</p>
                 <strong className="mt-1 block font-serif text-2xl">Bekasi, Jawa Barat</strong>
               </div>
+
+              {/* Clean mobile badge that leaves photo unobstructed */}
+              <div className="sm:hidden absolute top-4 left-4 rounded-full bg-white/95 px-3.5 py-1.5 text-xs font-semibold text-[#10233f] shadow-lg flex items-center gap-2 backdrop-blur-xs border border-white/40">
+                <Icon name="map" size={15} />
+                <span>Workshop & Galeri · Bekasi</span>
+              </div>
             </div>
-            <div className="p-6 sm:p-8">
+            <div className="p-5 sm:p-8">
               <h3 className="font-serif text-2xl leading-tight sm:text-3xl">FuRi Valentine Batik</h3>
-              <div className="mt-6 space-y-5">
-                <div className="flex gap-4">
+              <div className="mt-5 sm:mt-6 space-y-4 sm:space-y-5">
+                <div className="flex gap-3 sm:gap-4">
                   <span className="icon-box"><Icon name="pin" /></span>
-                  <div><p className="text-xs font-bold uppercase tracking-widest text-[#d8ab5d]">Alamat</p><p className="mt-2 leading-7 text-white/75">Jl. Transad X No. 1A, Jatiranggon,<br />Jatisampurna, Kota Bekasi</p></div>
+                  <div><p className="text-xs font-bold uppercase tracking-widest text-[#d8ab5d]">Alamat</p><p className="mt-1 sm:mt-2 text-xs sm:text-sm leading-relaxed sm:leading-7 text-white/80">Jl. Transad X No. 1A, Jatiranggon,<br />Jatisampurna, Kota Bekasi</p></div>
                 </div>
-                <div className="flex gap-4">
+                <div className="flex gap-3 sm:gap-4">
                   <span className="icon-box"><Icon name="clock" /></span>
-                  <div><p className="text-xs font-bold uppercase tracking-widest text-[#d8ab5d]">Jam Galeri</p><p className="mt-2 leading-7 text-white/75">Senin – Sabtu · 09.00 – 17.00 WIB<br /><span className="text-xs">Minggu dengan reservasi</span></p></div>
+                  <div><p className="text-xs font-bold uppercase tracking-widest text-[#d8ab5d]">Jam Galeri</p><p className="mt-1 sm:mt-2 text-xs sm:text-sm leading-relaxed sm:leading-7 text-white/80">Senin – Sabtu · 09.00 – 17.00 WIB<br /><span className="text-xs opacity-75">Minggu dengan reservasi</span></p></div>
                 </div>
-                <div className="flex gap-4">
+                <div className="flex gap-3 sm:gap-4">
                   <span className="icon-box"><Icon name="calendar" /></span>
-                  <div><p className="text-xs font-bold uppercase tracking-widest text-[#d8ab5d]">Reservasi Kunjungan</p><p className="mt-2 leading-7 text-white/75">Reservasi via WhatsApp sebelum berkunjung.</p></div>
+                  <div><p className="text-xs font-bold uppercase tracking-widest text-[#d8ab5d]">Reservasi Kunjungan</p><p className="mt-1 sm:mt-2 text-xs sm:text-sm leading-relaxed sm:leading-7 text-white/80">Reservasi via WhatsApp sebelum berkunjung.</p></div>
                 </div>
               </div>
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className="mt-6 flex flex-wrap gap-2.5 sm:gap-3">
                 <a className="button-gold" href={mapsUrl} target="_blank" rel="noreferrer"><Icon name="map" /> Buka di Google Maps</a>
                 <a className="button-dark-outline" href={`${whatsappUrl}?text=${encodeURIComponent("Halo, saya ingin reservasi kunjungan ke galeri FuRi Valentine Batik.")}`} target="_blank" rel="noreferrer"><Icon name="whatsapp" /> Reservasi</a>
               </div>
@@ -289,34 +297,34 @@ function App() {
         </section>
 
         {/* ─── Kontak / Form Konsultasi ─── */}
-        <section className="bg-[#10233f] py-12 text-white sm:py-16 lg:py-20" id="kontak">
+        <section className="relative bg-[#0d1c33] border-t border-white/10 py-10 sm:py-16 lg:py-20 text-white" id="kontak">
           <div className="mx-auto grid max-w-7xl gap-8 px-5 lg:grid-cols-[0.8fr_1.2fr] lg:gap-10 lg:px-10">
             <div>
               <p className="eyebrow text-[#eccf9e]"><span className="h-px w-8 bg-[#eccf9e]" /> Konsultasi Batik Custom</p>
               <h2 className="section-title">Ceritakan batik yang ingin Anda buat.</h2>
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className="mt-5 sm:mt-6 flex flex-wrap gap-2.5 sm:gap-3">
                 <a className="contact-pill" href={instagramUrl} target="_blank" rel="noreferrer"><Icon name="instagram" /> Instagram</a>
                 <a className="contact-pill" href={whatsappUrl} target="_blank" rel="noreferrer"><Icon name="whatsapp" /> Chat WhatsApp</a>
               </div>
             </div>
-            <form className="rounded-3xl bg-white p-5 text-[#10233f] shadow-2xl sm:p-7" onSubmit={submitConsultation}>
-              <div className="grid gap-5 sm:grid-cols-2">
+            <form className="rounded-2xl sm:rounded-3xl bg-white p-5 text-[#10233f] shadow-2xl sm:p-7 border border-white/20" onSubmit={submitConsultation}>
+              <div className="grid gap-4 sm:gap-5 sm:grid-cols-2">
                 <label className="form-label">Nama Anda<input className="form-input" name="name" placeholder="Nama lengkap" required /></label>
                 <label className="form-label">Nomor WhatsApp<input className="form-input" name="phone" placeholder="08xx xxxx xxxx" required /></label>
               </div>
-              <label className="form-label mt-5">Kebutuhan
+              <label className="form-label mt-4 sm:mt-5">Kebutuhan
                 <select className="form-input" name="interest" defaultValue="Batik Custom Satuan">
                   <option>Batik Custom Satuan</option><option>Pesanan Bulk</option><option>Koleksi Busana Jadi</option><option>Kain Bahan</option><option>Reservasi Galeri</option>
                 </select>
               </label>
-              <label className="form-label mt-5">Kebutuhan Anda<textarea className="form-input min-h-28 resize-none" name="message" placeholder="Motif, jumlah, dan waktu pemesanan" /></label>
+              <label className="form-label mt-4 sm:mt-5">Kebutuhan Anda<textarea className="form-input min-h-28 resize-none" name="message" placeholder="Motif, jumlah, dan waktu pemesanan" /></label>
               <button className="button-primary button-large mt-6 w-full" type="submit">Kirim via WhatsApp <Icon name="arrow" /></button>
             </form>
           </div>
         </section>
       </main>
 
-      <footer className="bg-[#0b172a] py-7 pb-28 md:pb-7 text-white/60">
+      <footer className="bg-[#07101e] border-t border-white/10 py-7 pb-28 md:pb-7 text-white/60">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-5 text-center text-sm sm:flex-row sm:text-left lg:px-10">
           <div className="flex items-center gap-3 text-white">
             <img src="/images/logo_furi.webp" alt="FuRi Valentine Batik" className="h-8 w-auto object-contain brightness-0 invert" />
