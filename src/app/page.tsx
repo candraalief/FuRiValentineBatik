@@ -201,7 +201,7 @@ function App() {
                 <img className="h-full w-full object-contain sm:object-cover object-center sm:object-top" src="/images/batik_04.webp" alt="Busana Tunik Batik FuRi Valentine" />
               </div>
               <div className="absolute bottom-0 right-0 h-[54%] sm:h-[60%] w-[54%] sm:w-[56%] overflow-hidden rounded-2xl border-[9px] border-white bg-[#091426] shadow-2xl shadow-[#091426]/30">
-                <img className="h-full w-full object-cover object-center scale-110" src="/images/batik_14.webp" alt="Kain Batik Sutra Motif Burung Bangau dan Teratai" />
+                <img className="h-full w-full object-cover object-center scale-110" src="/images/batik_14_hero.webp" alt="Kain Batik Sutra Motif Burung Bangau dan Teratai" />
               </div>
               <div className="absolute bottom-[4%] sm:bottom-[8%] left-[1%] sm:left-[2%] z-10 flex size-24 sm:size-32 rotate-[-8deg] flex-col items-center justify-center rounded-full bg-[#d8ab5d] text-center shadow-xl">
                 <span className="font-serif text-xl sm:text-3xl italic">Batik</span>
