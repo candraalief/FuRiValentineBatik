@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { COLLECTIONS_DATA } from "@/services/data/collections.data";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://furivalentinebatik.com";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://valentinebatik.vercel.app";
   const now = new Date();
 
   // Core static routes

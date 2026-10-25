@@ -6,7 +6,7 @@ export const SITE_CONFIG = {
   foundedYear: "2007",
   description:
     "FuRi Valentine Batik (Valentine Batik) adalah UMKM pelopor pelestarian seni batik di Kota Bekasi. Menghadirkan batik tulis dan cap adiluhung dengan motif ikonik khas Bekasi—seperti Ikan Gabus, Bambu Runcing Patriot, Rawa Tembaga, dan Teratai—berpadu kemewahan wastra nusantara.",
-  url: "https://furivalentinbatik.com",
+  url: "https://valentinebatik.vercel.app",
   phone: "0858-6614-0707",
   whatsappNumber: "6285866140707",
   whatsappUrl: "https://wa.me/6285866140707",
