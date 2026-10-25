@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Figma Make App",
+  title: "FuRi Valentine Batik",
   description:
-    "Showcases FuRi Valentine Batik products with visual catalogs, direct WhatsApp contact, location details, and easy booking for gallery visits.",
+    "FuRi Valentine Batik menyediakan seragam batik sekolah, seragam kantor, Atasan Wanita, Hem, Kemeja, Bahan Batik, Udeng, Scarf, dan batik custom khas Bekasi.",
 };
 
 export default function RootLayout({

@@ -196,16 +196,16 @@ function App() {
                 <strong className="font-semibold text-[#10233f]">FuRI Valentine Batik</strong> menyediakan seragam batik sekolah, seragam kantor, Atasan Wanita, Hem , Kemeja, Bahan Batik, Udeng, Scarf, dll
               </p>
             </div>
-            <div className="relative min-h-[380px] sm:min-h-[480px] lg:min-h-[530px]">
-              <div className="absolute left-0 top-0 h-[88%] w-[74%] overflow-hidden rounded-t-[9rem] border-[10px] border-white bg-white shadow-2xl shadow-[#091426]/20">
-                <img className="h-full w-full object-cover object-center" src="/images/batik_04.webp" alt="Busana Tunik Batik FuRi Valentine" />
+            <div className="relative min-h-[420px] sm:min-h-[480px] lg:min-h-[530px]">
+              <div className="absolute left-0 top-0 h-[90%] sm:h-[88%] w-[72%] sm:w-[74%] overflow-hidden rounded-t-[5.5rem] sm:rounded-t-[9rem] border-[10px] border-white bg-white shadow-2xl shadow-[#091426]/20">
+                <img className="h-full w-full object-contain sm:object-cover object-center sm:object-top" src="/images/batik_04.webp" alt="Busana Tunik Batik FuRi Valentine" />
               </div>
-              <div className="absolute bottom-0 right-0 h-[60%] w-[56%] overflow-hidden rounded-2xl border-[9px] border-white bg-[#091426] shadow-2xl shadow-[#091426]/30">
+              <div className="absolute bottom-0 right-0 h-[54%] sm:h-[60%] w-[54%] sm:w-[56%] overflow-hidden rounded-2xl border-[9px] border-white bg-[#091426] shadow-2xl shadow-[#091426]/30">
                 <img className="h-full w-full object-cover object-center scale-110" src="/images/batik_14.webp" alt="Kain Batik Sutra Motif Burung Bangau dan Teratai" />
               </div>
-              <div className="absolute bottom-[8%] left-[2%] z-10 flex size-28 sm:size-32 rotate-[-8deg] flex-col items-center justify-center rounded-full bg-[#d8ab5d] text-center shadow-xl">
-                <span className="font-serif text-2xl sm:text-3xl italic">Batik</span>
-                <span className="mt-0.5 sm:mt-1 text-[8px] sm:text-[9px] font-bold uppercase tracking-[0.2em]">Bekasi</span>
+              <div className="absolute bottom-[4%] sm:bottom-[8%] left-[1%] sm:left-[2%] z-10 flex size-24 sm:size-32 rotate-[-8deg] flex-col items-center justify-center rounded-full bg-[#d8ab5d] text-center shadow-xl">
+                <span className="font-serif text-xl sm:text-3xl italic">Batik</span>
+                <span className="mt-0.5 sm:mt-1 text-[7px] sm:text-[9px] font-bold uppercase tracking-[0.2em]">Bekasi</span>
               </div>
             </div>
           </div>

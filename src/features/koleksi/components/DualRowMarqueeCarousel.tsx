@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 
 interface ProductItem {
   id: string;
@@ -177,9 +177,171 @@ const ROW_2_ITEMS: ProductItem[] = [
   },
 ];
 
-// Duplicate once (2x total) for ultra-efficient memory and flawless seamless loop
-const ROW_1_DUPLICATED = [...ROW_1_ITEMS, ...ROW_1_ITEMS];
-const ROW_2_DUPLICATED = [...ROW_2_ITEMS, ...ROW_2_ITEMS];
+// Helper row with high-performance requestAnimationFrame loop and pointer drag support
+const DraggableMarqueeRow: React.FC<{
+  items: ProductItem[];
+  direction: "left" | "right";
+  speed?: number;
+  className?: string;
+}> = ({ items, direction, speed = 36, className = "" }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  const offsetRef = useRef(0);
+  const isDraggingRef = useRef(false);
+  const isPointerDownRef = useRef(false);
+  const isHoveredRef = useRef(false);
+  const startPosRef = useRef({ x: 0, y: 0 });
+  const lastXRef = useRef(0);
+  const velocityRef = useRef(0);
+  const hasCapturedPointerRef = useRef(false);
+
+  // Quadruple items to guarantee seamless looping without empty space when dragged in either direction
+  const duplicatedItems = useMemo(() => [...items, ...items, ...items, ...items], [items]);
+
+  useEffect(() => {
+    let animId: number;
+    let lastTime = performance.now();
+
+    // Start from middle chunk so left and right drags both have continuous content
+    if (trackRef.current) {
+      const chunkWidth = trackRef.current.scrollWidth / 4;
+      offsetRef.current = -chunkWidth;
+      trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+    }
+
+    const loop = (now: number) => {
+      const dt = Math.min((now - lastTime) / 1000, 0.1);
+      lastTime = now;
+
+      const track = trackRef.current;
+      if (track) {
+        const chunkWidth = track.scrollWidth / 4;
+
+        if (!isDraggingRef.current && chunkWidth > 0) {
+          if (Math.abs(velocityRef.current) > 0.4) {
+            offsetRef.current += velocityRef.current;
+            velocityRef.current *= 0.94; // inertia friction
+          } else {
+            velocityRef.current = 0;
+            if (!isHoveredRef.current) {
+              const delta = (direction === "left" ? -speed : speed) * dt;
+              offsetRef.current += delta;
+            }
+          }
+
+          // Seamless modulo wrap
+          while (offsetRef.current > 0) {
+            offsetRef.current -= chunkWidth;
+          }
+          while (offsetRef.current < -chunkWidth * 2) {
+            offsetRef.current += chunkWidth;
+          }
+
+          track.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+        }
+      }
+
+      animId = requestAnimationFrame(loop);
+    };
+
+    animId = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(animId);
+  }, [direction, speed]);
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    isPointerDownRef.current = true;
+    isDraggingRef.current = false;
+    hasCapturedPointerRef.current = false;
+    startPosRef.current = { x: e.clientX, y: e.clientY };
+    lastXRef.current = e.clientX;
+    velocityRef.current = 0;
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isPointerDownRef.current) return;
+
+    const dx = e.clientX - lastXRef.current;
+    const totalDx = e.clientX - startPosRef.current.x;
+    const totalDy = e.clientY - startPosRef.current.y;
+
+    if (!isDraggingRef.current) {
+      if (Math.abs(totalDx) > 6) {
+        if (Math.abs(totalDx) > Math.abs(totalDy)) {
+          isDraggingRef.current = true;
+          try {
+            e.currentTarget.setPointerCapture(e.pointerId);
+            hasCapturedPointerRef.current = true;
+          } catch {
+            // fallback
+          }
+        } else {
+          // Native vertical scroll gesture
+          isPointerDownRef.current = false;
+          return;
+        }
+      }
+    }
+
+    if (isDraggingRef.current && trackRef.current) {
+      offsetRef.current += dx;
+      velocityRef.current = dx;
+      lastXRef.current = e.clientX;
+
+      const chunkWidth = trackRef.current.scrollWidth / 4;
+      if (chunkWidth > 0) {
+        while (offsetRef.current > 0) {
+          offsetRef.current -= chunkWidth;
+        }
+        while (offsetRef.current < -chunkWidth * 2) {
+          offsetRef.current += chunkWidth;
+        }
+      }
+
+      trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+    }
+  };
+
+  const handlePointerUpOrCancel = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (hasCapturedPointerRef.current) {
+      try {
+        e.currentTarget.releasePointerCapture(e.pointerId);
+      } catch {
+        // ignore
+      }
+      hasCapturedPointerRef.current = false;
+    }
+    isPointerDownRef.current = false;
+    isDraggingRef.current = false;
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      className={`overflow-hidden cursor-grab active:cursor-grabbing touch-pan-y select-none ${className}`}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUpOrCancel}
+      onPointerCancel={handlePointerUpOrCancel}
+      onMouseEnter={() => {
+        isHoveredRef.current = true;
+      }}
+      onMouseLeave={() => {
+        isHoveredRef.current = false;
+      }}
+    >
+      <div
+        ref={trackRef}
+        className="flex w-max gap-3 sm:gap-4 py-1 will-change-transform"
+        style={{ transform: "translate3d(0, 0, 0)" }}
+      >
+        {duplicatedItems.map((product, idx) => (
+          <MarqueeCard key={`${product.id}-${idx}`} product={product} />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 interface DualRowMarqueeCarouselProps {
   whatsappUrl?: string;
@@ -189,60 +351,38 @@ export const DualRowMarqueeCarousel: React.FC<DualRowMarqueeCarouselProps> = () 
   return (
     <div className="relative w-full overflow-hidden py-3 select-none [contain:paint]">
       {/* Row 1: Right to Left */}
-      <div className="mb-3.5 sm:mb-4 overflow-hidden">
-        <div className="flex w-max gap-3 sm:gap-4 animate-marquee-left py-1 will-change-transform">
-          {ROW_1_DUPLICATED.map((product, idx) => (
-            <MarqueeCard key={`r1-${idx}`} product={product} />
-          ))}
-        </div>
-      </div>
+      <DraggableMarqueeRow items={ROW_1_ITEMS} direction="left" speed={36} className="mb-3.5 sm:mb-4" />
 
       {/* Row 2: Left to Right (Opposite Direction) */}
-      <div className="overflow-hidden">
-        <div className="flex w-max gap-3 sm:gap-4 animate-marquee-right py-1 will-change-transform">
-          {ROW_2_DUPLICATED.map((product, idx) => (
-            <MarqueeCard key={`r2-${idx}`} product={product} />
-          ))}
-        </div>
-      </div>
+      <DraggableMarqueeRow items={ROW_2_ITEMS} direction="right" speed={36} />
     </div>
   );
 };
 
 const MarqueeCard: React.FC<{ product: ProductItem }> = ({ product }) => {
   return (
-    <article className="group relative w-[185px] sm:w-[210px] md:w-[230px] shrink-0 overflow-hidden rounded-xl border border-[#10233f]/10 bg-white [contain:content] transition-all duration-200 hover:-translate-y-1 hover:border-[#c51f5d]/40 hover:shadow-md">
+    <article className="group relative w-[185px] sm:w-[210px] md:w-[230px] shrink-0 overflow-hidden rounded-xl border border-[#10233f]/10 bg-white [contain:content] transition-shadow duration-200 hover:border-[#c51f5d]/40 hover:shadow-md pointer-events-auto select-none">
       {/* Product Image */}
       <div className="relative aspect-[4/5] w-full overflow-hidden bg-white">
         <img
           loading="lazy"
           decoding="async"
+          draggable={false}
           src={product.image}
           alt={product.title}
           width={230}
           height={288}
-          className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+          className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 pointer-events-none select-none"
         />
         {/* Soft subtle vignette */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent pointer-events-none" />
       </div>
 
-      {/* Product Details */}
-      <div className="p-3">
-        <div className="flex items-center justify-between gap-1 mb-1">
-          <span className="text-[10px] font-semibold uppercase tracking-wider text-[#c51f5d] truncate">
-            {product.category}
-          </span>
-          <span className="text-[9px] text-[#52627a] font-medium shrink-0">
-            {product.tag}
-          </span>
-        </div>
+      {/* Product Details: Satu judul utama konsisten berwarna hitam/navy */}
+      <div className="p-3 text-center">
         <h3 className="font-serif text-xs sm:text-sm font-semibold text-[#10233f] truncate group-hover:text-[#c51f5d] transition-colors">
           {product.title}
         </h3>
-        <p className="mt-0.5 text-[10px] sm:text-[11px] text-[#52627a] truncate">
-          Motif: {product.motif}
-        </p>
       </div>
     </article>
   );
