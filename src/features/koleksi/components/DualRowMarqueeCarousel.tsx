@@ -223,25 +223,24 @@ const MarqueeCard: React.FC<{ product: ProductItem }> = ({ product }) => {
           height={288}
           className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/15 pointer-events-none" />
-
-        {/* Top Badges */}
-        <div className="absolute left-2 top-2 right-2 flex items-center justify-between gap-1">
-          <span className="rounded-full bg-white/95 px-2 py-0.5 text-[10px] font-semibold text-[#10233f] shadow-2xs">
-            {product.category}
-          </span>
-          <span className="rounded-full bg-[#10233f]/90 px-2 py-0.5 text-[9px] font-mono font-medium text-white shadow-2xs">
-            {product.tag}
-          </span>
-        </div>
+        {/* Soft subtle vignette */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent pointer-events-none" />
       </div>
 
       {/* Product Details */}
       <div className="p-3">
+        <div className="flex items-center justify-between gap-1 mb-1">
+          <span className="text-[10px] font-semibold uppercase tracking-wider text-[#c51f5d] truncate">
+            {product.category}
+          </span>
+          <span className="text-[9px] text-[#52627a] font-medium shrink-0">
+            {product.tag}
+          </span>
+        </div>
         <h3 className="font-serif text-xs sm:text-sm font-semibold text-[#10233f] truncate group-hover:text-[#c51f5d] transition-colors">
           {product.title}
         </h3>
-        <p className="mt-1 text-[10px] sm:text-[11px] text-[#52627a] truncate">
+        <p className="mt-0.5 text-[10px] sm:text-[11px] text-[#52627a] truncate">
           Motif: {product.motif}
         </p>
       </div>

@@ -138,9 +138,11 @@ function App() {
       <header className="fixed inset-x-0 top-0 z-50 border-b border-[#10233f]/10 bg-white/90 backdrop-blur-xl">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-3 px-5 lg:px-10">
           <a className="group flex shrink-0 items-center gap-3" href="#beranda">
-            <span className="flex size-8 rotate-45 items-center justify-center border border-[#c51f5d] sm:size-9">
-              <span className="-rotate-45 font-serif text-base text-[#c51f5d] sm:text-lg">FV</span>
-            </span>
+            <img
+              src="/images/logo_furi.webp"
+              alt="Logo FuRi Valentine Batik"
+              className="h-9 sm:h-10 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
+            />
             <strong className="whitespace-nowrap font-serif text-base font-normal leading-tight tracking-normal sm:text-xl">FuRi Valentine Batik</strong>
           </a>
           <nav className="hidden items-center gap-5 text-sm font-medium xl:flex">
@@ -151,7 +153,7 @@ function App() {
           </nav>
           <div className="ml-auto hidden items-center gap-2 md:flex xl:ml-0">
             <a className="button-outline hidden xl:inline-flex" href={instagramUrl} target="_blank" rel="noreferrer"><Icon name="instagram" size={17} /> Instagram</a>
-            <a className="button-primary" href={whatsappUrl} target="_blank" rel="noreferrer"><Icon name="whatsapp" size={18} /> Konsultasi Custom</a>
+            <a className="button-primary" href={whatsappUrl} target="_blank" rel="noreferrer"><Icon name="whatsapp" size={18} /> WhatsApp</a>
           </div>
           <button
             aria-expanded={menuOpen}
@@ -190,21 +192,20 @@ function App() {
                 Batik Bekasi,<br />
                 <span className="italic text-[#c51f5d]">pilihanmu.</span>
               </h1>
-              <div className="mt-6 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-                <a className="button-primary button-large" href="#koleksi">Lihat Galeri Koleksi <Icon name="arrow" /></a>
-                <a className="button-ghost button-large" href={`${whatsappUrl}?text=${encodeURIComponent("Halo, saya ingin berkonsultasi mengenai pesanan batik custom.")}`} target="_blank" rel="noreferrer"><Icon name="whatsapp" /> Pesan Batik Custom</a>
-              </div>
+              <p className="mt-6 max-w-xl text-sm sm:text-base leading-relaxed text-[#2d3f57] font-normal">
+                <strong className="font-semibold text-[#10233f]">FuRI Valentine Batik</strong> menyediakan seragam batik sekolah, seragam kantor, Atasan Wanita, Hem , Kemeja, Bahan Batik, Udeng, Scarf, dll
+              </p>
             </div>
-            <div className="relative min-h-[360px] sm:min-h-[460px] lg:min-h-[500px]">
-              <div className="absolute left-0 top-0 h-[76%] w-[72%] overflow-hidden rounded-t-[9rem] border-[10px] border-white bg-white shadow-2xl shadow-[#091426]/20">
-                <img className="h-full w-full object-cover object-top" src="/images/batik_04.webp" alt="Busana Tunik Batik FuRi Valentine" />
+            <div className="relative min-h-[380px] sm:min-h-[480px] lg:min-h-[530px]">
+              <div className="absolute left-0 top-0 h-[88%] w-[74%] overflow-hidden rounded-t-[9rem] border-[10px] border-white bg-white shadow-2xl shadow-[#091426]/20">
+                <img className="h-full w-full object-cover object-center" src="/images/batik_04.webp" alt="Busana Tunik Batik FuRi Valentine" />
               </div>
-              <div className="absolute bottom-0 right-0 h-[58%] w-[54%] overflow-hidden rounded-2xl border-[9px] border-white bg-white shadow-2xl shadow-[#091426]/30">
-                <img className="h-full w-full object-cover object-center" src="/images/batik_14.webp" alt="Kain Batik Sutra Motif Burung Bangau dan Teratai" />
+              <div className="absolute bottom-0 right-0 h-[60%] w-[56%] overflow-hidden rounded-2xl border-[9px] border-white bg-[#091426] shadow-2xl shadow-[#091426]/30">
+                <img className="h-full w-full object-cover object-center scale-110" src="/images/batik_14.webp" alt="Kain Batik Sutra Motif Burung Bangau dan Teratai" />
               </div>
-              <div className="absolute bottom-[13%] left-[3%] z-10 flex size-32 rotate-[-8deg] flex-col items-center justify-center rounded-full bg-[#d8ab5d] text-center shadow-xl">
-                <span className="font-serif text-3xl italic">Batik</span>
-                <span className="mt-1 text-[9px] font-bold uppercase tracking-[0.2em]">Bekasi</span>
+              <div className="absolute bottom-[8%] left-[2%] z-10 flex size-28 sm:size-32 rotate-[-8deg] flex-col items-center justify-center rounded-full bg-[#d8ab5d] text-center shadow-xl">
+                <span className="font-serif text-2xl sm:text-3xl italic">Batik</span>
+                <span className="mt-0.5 sm:mt-1 text-[8px] sm:text-[9px] font-bold uppercase tracking-[0.2em]">Bekasi</span>
               </div>
             </div>
           </div>
@@ -254,8 +255,8 @@ function App() {
             <h2 className="section-title">Lihat bahan dan sampel langsung.</h2>
           </div>
           <div className="grid overflow-hidden rounded-[2rem] bg-[#10233f] text-white shadow-2xl shadow-[#10233f]/15 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="relative min-h-[300px] sm:min-h-[380px] bg-slate-900">
-              <img className="absolute inset-0 h-full w-full object-cover opacity-65" src="/images/batik_23.webp" alt="Karya wastra galeri workshop batik" />
+            <div className="relative min-h-[300px] sm:min-h-[380px] bg-slate-900 overflow-hidden">
+              <img className="absolute inset-0 h-full w-full object-cover opacity-75 blur-[1.5px] scale-105" src="/images/workshop_gallery.webp" alt="Workshop & Galeri FuRi Valentine Batik" />
               <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#10233f]/75" />
                 <div className="absolute bottom-8 left-8 rounded-xl bg-white p-5 text-[#10233f] shadow-xl">
                 <Icon name="map" size={28} />
@@ -318,6 +319,7 @@ function App() {
       <footer className="bg-[#0b172a] py-7 pb-28 md:pb-7 text-white/60">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-5 text-center text-sm sm:flex-row sm:text-left lg:px-10">
           <div className="flex items-center gap-3 text-white">
+            <img src="/images/logo_furi.webp" alt="FuRi Valentine Batik" className="h-8 w-auto object-contain brightness-0 invert" />
             <span className="font-serif text-2xl">FuRi Valentine</span><span className="h-4 w-px bg-white/20" /><span className="text-xs uppercase tracking-widest text-[#d8ab5d]">Batik Bekasi</span>
           </div>
           <p>© 2025 FuRi Valentine Batik. Karya dari Bekasi untuk Nusantara.</p>

@@ -36,13 +36,6 @@ export const PengadaanInlineShowcase: React.FC<PengadaanInlineShowcaseProps> = (
                   className="h-full w-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#10233f]/40 via-transparent to-black/5 pointer-events-none" />
-
-                {/* Top Badge */}
-                <div className="absolute left-3 top-3">
-                  <span className="rounded-full bg-white/95 px-3 py-1 text-[11px] font-semibold text-[#10233f] shadow-xs border border-[#10233f]/10">
-                    {item.categoryName}
-                  </span>
-                </div>
               </div>
 
               {/* Content Body */}
