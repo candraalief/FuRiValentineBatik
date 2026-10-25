@@ -1,11 +1,15 @@
 "use client";
 
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useState } from "react";
+import { MobileBottomBar } from "@/components/layout/MobileBottomBar";
+import { PengadaanInlineShowcase } from "@/features/pengadaan/components/PengadaanInlineShowcase";
+import { DualRowMarqueeCarousel } from "@/features/koleksi/components/DualRowMarqueeCarousel";
 
-const whatsappNumber = "6281234567890";
+const whatsappNumber = "6285866140707";
 const whatsappUrl = `https://wa.me/${whatsappNumber}`;
 const mapsUrl =
   "https://www.google.com/maps/search/?api=1&query=Jl.+Transad+X+No.+1A,+Jatiranggon,+Jatisampurna,+Kota+Bekasi";
+const instagramUrl = "https://www.instagram.com/indahturiri/";
 
 type IconName =
   | "arrow"
@@ -17,7 +21,12 @@ type IconName =
   | "phone"
   | "pin"
   | "sparkle"
-  | "whatsapp";
+  | "whatsapp"
+  | "users"
+  | "building"
+  | "palette"
+  | "close"
+  | "zoom-in";
 
 function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
   const paths: Record<IconName, React.ReactNode> = {
@@ -62,6 +71,36 @@ function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
         <path d="M8.2 7.5c.2-.4.4-.4.7-.4h.5c.2 0 .4 0 .5.4l.7 1.7c.1.3.1.5-.1.7l-.6.7c-.2.2-.3.4-.1.7.4.8 1.1 1.6 1.8 2.1.9.7 1.6.9 1.9 1 .3.1.5 0 .7-.2l.8-1c.2-.2.4-.3.7-.2l1.8.8c.3.1.5.2.5.4.1.2.1 1-.2 1.7-.3.7-1.5 1.4-2.1 1.4-.6 0-1.4.2-4.5-1.1-3.7-1.6-5.9-5.4-6.1-5.7-.2-.3-1.5-2-.7-3.8Z" />
       </>
     ),
+    users: (
+      <>
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+      </>
+    ),
+    building: (
+      <>
+        <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" />
+        <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2M10 6h4M10 10h4M10 14h4M10 18h4" />
+      </>
+    ),
+    palette: (
+      <>
+        <circle cx="13.5" cy="6.5" r="0.5" fill="currentColor" />
+        <circle cx="17.5" cy="10.5" r="0.5" fill="currentColor" />
+        <circle cx="8.5" cy="7.5" r="0.5" fill="currentColor" />
+        <circle cx="6.5" cy="12.5" r="0.5" fill="currentColor" />
+        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.9 0 1.5-.7 1.5-1.5 0-.4-.1-.7-.4-1-.3-.3-.4-.6-.4-1 0-.8.7-1.5 1.5-1.5H16a5.6 5.6 0 0 0 6-5.5C22 6.5 17.5 2 12 2Z" />
+      </>
+    ),
+    close: <path d="M18 6 6 18M6 6l12 12" />,
+    "zoom-in": (
+      <>
+        <circle cx="11" cy="11" r="8" />
+        <path d="m21 21-4.35-4.35" />
+        <path d="M11 8v6M8 11h6" />
+      </>
+    ),
   };
 
   return (
@@ -81,169 +120,11 @@ function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
   );
 }
 
-const readyCategories = ["Semua", "Hem / Kemeja", "Blus", "Tunik", "Dress", "Outer", "Rok", "Setelan", "Kain Batik"];
-
-const readyProducts = [
-  {
-    category: "Hem / Kemeja",
-    title: "Kemeja Batik Patriot",
-    image:
-      "https://images.unsplash.com/photo-1761516659902-2994696b362e?auto=format&fit=crop&w=1000&q=85",
-    number: "01",
-  },
-  {
-    category: "Dress",
-    title: "Dress Arunika",
-    image:
-      "https://images.unsplash.com/photo-1761516659766-c092d4b1209d?auto=format&fit=crop&w=1000&q=85",
-    number: "02",
-  },
-  {
-    category: "Kain Batik",
-    title: "Batik Tulis Halus",
-    image:
-      "https://images.unsplash.com/photo-1680345575812-2f6878d7d775?auto=format&fit=crop&w=1000&q=85",
-    number: "03",
-  },
-  {
-    category: "Kain Batik",
-    title: "Batik Cap Patriot Bekasi",
-    image:
-      "https://images.unsplash.com/photo-1661144050353-1d2566cbdf03?auto=format&fit=crop&w=1000&q=85",
-    number: "04",
-  },
-];
-
-const groupProducts = [
-  {
-    category: "Kantor",
-    title: "Batik Kantor",
-    image: readyProducts[0].image,
-    number: "01",
-  },
-  {
-    category: "Sekolah",
-    title: "Batik Sekolah",
-    image: readyProducts[3].image,
-    number: "02",
-  },
-  {
-    category: "Custom",
-    title: "Motif untuk Bersama",
-    image: readyProducts[2].image,
-    number: "03",
-  },
-];
-
-function ProductCarousel({
-  products,
-  id,
-  custom = false,
-}: {
-  products: typeof readyProducts;
-  id: string;
-  custom?: boolean;
-}) {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState(0);
-  const [activeCategory, setActiveCategory] = useState("Semua");
-  const categories = custom
-    ? ["Semua", ...new Set(products.map((product) => product.category))]
-    : readyCategories;
-  const visibleProducts = activeCategory === "Semua"
-    ? products
-    : products.filter((product) => product.category === activeCategory);
-
-  function move(direction: number) {
-    const track = trackRef.current;
-    if (!track) return;
-    const card = track.querySelector("article");
-    const distance = card ? card.getBoundingClientRect().width + 16 : track.clientWidth;
-    track.scrollBy({
-      left: direction * distance,
-      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
-    });
-  }
-
-  return (
-    <>
-      <div className="mt-6 flex items-start justify-between gap-3 border-t border-[#10233f]/15 pt-4">
-        <div role="group" aria-label={custom ? "Filter kategori batik kantor dan sekolah" : "Filter kategori koleksi toko"} className="flex min-w-0 flex-1 gap-2 overflow-x-auto pb-1 md:flex-wrap md:overflow-visible">
-          {categories.map((category) => (
-            <button
-              key={category}
-              type="button"
-              aria-pressed={activeCategory === category}
-              aria-controls={id}
-              onClick={() => {
-                setActiveCategory(category);
-                setPosition(0);
-              }}
-              className={`min-h-11 shrink-0 rounded-full border px-4 py-2 text-sm font-medium leading-5 transition focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c51f5d] ${activeCategory === category ? "border-[#c51f5d] bg-[#c51f5d] text-white" : "border-[#10233f]/20 text-[#52627a] hover:border-[#c51f5d] hover:text-[#c51f5d]"}`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
-        <div className={`flex shrink-0 gap-2 ${visibleProducts.length < 2 ? "hidden" : ""}`}>
-          <button type="button" aria-label="Koleksi sebelumnya" aria-controls={id} onClick={() => move(-1)} className="flex size-11 items-center justify-center rounded-full border border-[#10233f]/20 text-[#10233f] transition hover:border-[#c51f5d] hover:text-[#c51f5d] focus-visible:outline-2 focus-visible:outline-offset-4">
-            <span className="rotate-180"><Icon name="arrow" size={18} /></span>
-          </button>
-          <button type="button" aria-label="Koleksi berikutnya" aria-controls={id} onClick={() => move(1)} className="flex size-11 items-center justify-center rounded-full border border-[#10233f]/20 text-[#10233f] transition hover:border-[#c51f5d] hover:text-[#c51f5d] focus-visible:outline-2 focus-visible:outline-offset-4">
-            <Icon name="arrow" size={18} />
-          </button>
-        </div>
-      </div>
-      <div
-        key={activeCategory}
-        ref={trackRef}
-        id={id}
-        role="region"
-        aria-label={custom ? "Koleksi batik kantor dan sekolah" : "Koleksi siap dibeli di toko"}
-        tabIndex={0}
-        onScroll={(event) => {
-          const track = event.currentTarget;
-          const maxScroll = track.scrollWidth - track.clientWidth;
-          setPosition(maxScroll > 0 ? track.scrollLeft / maxScroll : 0);
-        }}
-        className="mt-4 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c51f5d]"
-      >
-        {visibleProducts.length === 0 && (
-          <div className="w-full border border-[#10233f]/10 bg-white/60 px-5 py-8 text-center sm:py-10">
-            <h3 className="font-serif text-2xl leading-snug">Koleksi {activeCategory}</h3>
-            <p className="mt-2 text-sm text-[#52627a]">Produk belum ditampilkan.</p>
-            <a className="button-outline mt-6" href={`${whatsappUrl}?text=${encodeURIComponent(`Halo FuRi Valentine Batik, apakah ada koleksi ${activeCategory}? Saya ingin menanyakan pilihan dan ketersediaannya.`)}`} target="_blank" rel="noreferrer">
-              <Icon name="whatsapp" size={18} /> Tanya koleksi
-            </a>
-          </div>
-        )}
-        {visibleProducts.map((product) => (
-          <article className="group w-[85%] shrink-0 snap-start overflow-hidden border border-[#10233f]/10 bg-white/80 sm:w-[calc((100%-16px)/2)] lg:w-[38%]" key={product.title}>
-            <div className="relative aspect-[4/5] overflow-hidden bg-[#d7c7b2]">
-              <img loading="lazy" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" src={product.image} alt={product.title} />
-              <span className="absolute left-4 top-4 rounded-full bg-[#f6f0e5]/90 px-3 py-1.5 text-xs font-medium leading-4 backdrop-blur">{product.category}</span>
-              <span className="absolute bottom-3 right-4 font-serif text-5xl italic text-white/70">{product.number}</span>
-            </div>
-            <div className="p-5">
-              <h3 className="font-serif text-xl leading-snug sm:text-2xl">{product.title}</h3>
-              <a className="mt-4 flex min-h-11 items-center justify-between gap-3 border-t border-[#10233f]/10 pt-2 text-sm font-semibold text-[#c51f5d]" href={`${whatsappUrl}?text=${encodeURIComponent(custom ? `Halo, saya ingin berkonsultasi mengenai ${product.title}.` : `Halo, saya tertarik dengan ${product.title}. Boleh info ketersediaannya untuk dibeli langsung di toko?`)}`} target="_blank" rel="noreferrer">
-                {custom ? "Konsultasikan pesanan" : "Tanya ketersediaan"} <Icon name="arrow" size={18} />
-              </a>
-            </div>
-          </article>
-        ))}
-      </div>
-      <div className={`flex items-center gap-2 ${visibleProducts.length < 2 ? "hidden" : ""}`} aria-hidden="true">
-        {[0, 0.5, 1].map((step) => (
-          <span key={step} className={`h-1 rounded-full transition-all ${Math.abs(position - step) <= 0.25 ? "w-8 bg-[#c51f5d]" : "w-3 bg-[#10233f]/15"}`} />
-        ))}
-      </div>
-    </>
-  );
-}
+/* ─── Main Page ─── */
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
+
 
   function submitConsultation(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -264,12 +145,12 @@ function App() {
           </a>
           <nav className="hidden items-center gap-5 text-sm font-medium xl:flex">
             <a className="nav-link" href="#koleksi">Koleksi</a>
-            <a className="nav-link" href="#kisah">Kisah Kami</a>
+            <a className="nav-link" href="#batik-kantor-sekolah">Batik Seragam</a>
             <a className="nav-link" href="#galeri">Kunjungi Galeri</a>
             <a className="nav-link" href="#kontak">Kontak</a>
           </nav>
           <div className="ml-auto hidden items-center gap-2 md:flex xl:ml-0">
-            <a className="button-outline hidden xl:inline-flex" href={`tel:+${whatsappNumber}`}><Icon name="phone" size={17} /> Telepon</a>
+            <a className="button-outline hidden xl:inline-flex" href={instagramUrl} target="_blank" rel="noreferrer"><Icon name="instagram" size={17} /> Instagram</a>
             <a className="button-primary" href={whatsappUrl} target="_blank" rel="noreferrer"><Icon name="whatsapp" size={18} /> Konsultasi Custom</a>
           </div>
           <button
@@ -285,7 +166,7 @@ function App() {
           <nav className="grid gap-1 border-t border-[#10233f]/10 bg-white p-5 text-sm font-medium xl:hidden">
             {[
               ["Koleksi", "#koleksi"],
-              ["Kisah Kami", "#kisah"],
+              ["Batik Seragam", "#batik-kantor-sekolah"],
               ["Kunjungi Galeri", "#galeri"],
               ["Kontak", "#kontak"],
             ].map(([label, href]) => (
@@ -298,27 +179,28 @@ function App() {
       </header>
 
       <main>
+        {/* ─── Hero ─── */}
         <section className="relative pt-20" id="beranda">
           <div className="absolute bottom-0 right-0 top-20 hidden w-[43%] bg-[#10233f] lg:block" />
           <div className="batik-mark absolute left-0 top-40 size-64 opacity-[0.06]" />
           <div className="relative mx-auto grid max-w-7xl gap-8 px-5 py-10 sm:py-12 lg:grid-cols-[1.04fr_0.96fr] lg:gap-10 lg:px-10 lg:py-16">
             <div className="z-10 flex flex-col justify-center">
-              <p className="eyebrow"><Icon name="sparkle" size={16} /> Koleksi Jadi & Batik Custom</p>
+              <p className="eyebrow"><Icon name="sparkle" size={16} /> Karya Wastra & Batik Custom</p>
               <h1 className="mt-4 max-w-3xl font-serif text-[clamp(2.75rem,5.5vw,4.5rem)] leading-[1.08] tracking-[-0.01em]">
                 Batik Bekasi,<br />
                 <span className="italic text-[#c51f5d]">pilihanmu.</span>
               </h1>
               <div className="mt-6 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-                <a className="button-primary button-large" href="#koleksi">Lihat Koleksi Jadi <Icon name="arrow" /></a>
+                <a className="button-primary button-large" href="#koleksi">Lihat Galeri Koleksi <Icon name="arrow" /></a>
                 <a className="button-ghost button-large" href={`${whatsappUrl}?text=${encodeURIComponent("Halo, saya ingin berkonsultasi mengenai pesanan batik custom.")}`} target="_blank" rel="noreferrer"><Icon name="whatsapp" /> Pesan Batik Custom</a>
               </div>
             </div>
             <div className="relative min-h-[360px] sm:min-h-[460px] lg:min-h-[500px]">
-              <div className="absolute left-0 top-0 h-[76%] w-[72%] overflow-hidden rounded-t-[9rem] border-[10px] border-white bg-[#d7c7b2] shadow-2xl shadow-[#091426]/20">
-                <img className="h-full w-full object-cover" src="https://images.unsplash.com/photo-1635790073975-ac99496914e3?auto=format&fit=crop&w=1200&q=88" alt="Perajin membatik dengan canting" />
+              <div className="absolute left-0 top-0 h-[76%] w-[72%] overflow-hidden rounded-t-[9rem] border-[10px] border-white bg-white shadow-2xl shadow-[#091426]/20">
+                <img className="h-full w-full object-cover object-top" src="/images/batik_04.webp" alt="Busana Tunik Batik FuRi Valentine" />
               </div>
-              <div className="absolute bottom-0 right-0 h-[58%] w-[54%] overflow-hidden border-[9px] border-white bg-[#ad8b74] shadow-2xl shadow-[#091426]/30">
-                <img className="h-full w-full object-cover" src="https://images.unsplash.com/photo-1616125162686-770bf85622b9?auto=format&fit=crop&w=900&q=88" alt="Detail kain batik bernuansa klasik" />
+              <div className="absolute bottom-0 right-0 h-[58%] w-[54%] overflow-hidden rounded-2xl border-[9px] border-white bg-white shadow-2xl shadow-[#091426]/30">
+                <img className="h-full w-full object-cover object-center" src="/images/batik_14.webp" alt="Kain Batik Sutra Motif Burung Bangau dan Teratai" />
               </div>
               <div className="absolute bottom-[13%] left-[3%] z-10 flex size-32 rotate-[-8deg] flex-col items-center justify-center rounded-full bg-[#d8ab5d] text-center shadow-xl">
                 <span className="font-serif text-3xl italic">Batik</span>
@@ -328,6 +210,7 @@ function App() {
           </div>
         </section>
 
+        {/* ─── Marquee ─── */}
         <section className="bg-[#10233f] py-4 text-[#f6f0e5]">
           <div className="marquee flex min-w-max items-center gap-8 text-xs font-bold uppercase tracking-[0.3em]">
             {["Koleksi Busana Jadi", "Batik Custom", "Pesanan Satuan", "Pesanan Bulk", "Kain Bahan", "Koleksi Busana Jadi"].map((item, index) => (
@@ -336,50 +219,44 @@ function App() {
           </div>
         </section>
 
-        <section className="section-shell scroll-mt-20" id="koleksi">
-          <div>
-            <p className="eyebrow"><span className="h-px w-8 bg-[#c51f5d]" /> 01 / Koleksi Toko</p>
-            <h2 className="section-title">Lihat, suka, bawa pulang.</h2>
+        {/* ─── Koleksi FuRi Valentine Batik — Dual-Row Infinite Looping Marquee ─── */}
+        <section className="py-12 sm:py-16 scroll-mt-20 overflow-hidden" id="koleksi">
+          <div className="mx-auto max-w-7xl px-5 text-center sm:px-10 mb-8 sm:mb-10">
+            <p className="eyebrow justify-center"><span className="h-px w-8 bg-[#c51f5d]" /> Busana & Kain Batik</p>
+            <h2 className="section-title">Koleksi FuRi Valentine Batik</h2>
+            <p className="mx-auto mt-2 max-w-xl text-xs sm:text-sm text-[#52627a]">
+              Menghadirkan motif ikonik khas Bekasi yang dituangkan ke dalam busana siap pakai dan kain bahan nyaman.
+            </p>
           </div>
-          <ProductCarousel products={readyProducts} id="koleksi-toko" />
-          <a className="button-outline mt-5" href="#galeri">Kunjungi toko <Icon name="arrow" size={18} /></a>
+
+          {/* 2-Row Dual-Direction Seamless Marquee */}
+          <DualRowMarqueeCarousel />
         </section>
 
-        <section className="border-y border-[#10233f]/10 bg-white/45" id="batik-kantor-sekolah">
+        {/* ─── Batik Kantor & Sekolah — 3 Kolom Showcase ─── */}
+        <section className="border-y border-[#10233f]/10 bg-white/45 scroll-mt-20" id="batik-kantor-sekolah">
           <div className="section-shell">
-            <div>
-              <p className="eyebrow"><span className="h-px w-8 bg-[#c51f5d]" /> 02 / Pesanan Bersama</p>
+            <div className="text-center mb-8">
+              <p className="eyebrow justify-center"><span className="h-px w-8 bg-[#c51f5d]" /> Pengadaan Seragam</p>
               <h2 className="section-title">Batik Kantor dan Sekolah</h2>
+              <p className="mx-auto mt-2 max-w-xl text-sm text-[#52627a]">
+                Pengadaan seragam batik untuk instansi pemerintah, korporat swasta, dan lembaga pendidikan.
+              </p>
             </div>
-            <ProductCarousel products={groupProducts} id="koleksi-kantor-sekolah" custom />
+            <PengadaanInlineShowcase whatsappUrl={whatsappUrl} />
           </div>
         </section>
 
-        <section className="overflow-hidden bg-[#e7f1ff]" id="kisah">
-          <div className="mx-auto grid max-w-7xl lg:grid-cols-2">
-            <div className="relative min-h-[320px] sm:min-h-[400px] lg:min-h-[460px]">
-              <img className="absolute inset-0 h-full w-full object-cover" src="https://images.unsplash.com/photo-1590251869641-dd94fb569954?auto=format&fit=crop&w=1400&q=88" alt="Proses kreatif perajin batik" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#10233f]/55 via-transparent" />
-            </div>
-            <div className="flex items-center px-5 py-12 sm:py-16 lg:px-10">
-              <div>
-                <p className="eyebrow"><span className="h-px w-8 bg-[#c51f5d]" /> Produksi di Bekasi</p>
-                <h2 className="section-title">Dari ide hingga <em className="text-[#c51f5d]">batik jadi.</em></h2>
-                <a className="button-outline mt-6" href={`${whatsappUrl}?text=${encodeURIComponent("Halo, saya ingin menanyakan proses pemesanan batik custom.")}`} target="_blank" rel="noreferrer">Tanya proses custom <Icon name="arrow" /></a>
-              </div>
-            </div>
-          </div>
-        </section>
-
+        {/* ─── Workshop & Galeri ─── */}
         <section className="section-shell" id="galeri">
           <div className="mb-6 text-center sm:mb-8">
             <p className="eyebrow justify-center"><span className="h-px w-8 bg-[#c51f5d]" /> Workshop & Galeri</p>
             <h2 className="section-title">Lihat bahan dan sampel langsung.</h2>
           </div>
           <div className="grid overflow-hidden rounded-[2rem] bg-[#10233f] text-white shadow-2xl shadow-[#10233f]/15 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="relative min-h-[300px] sm:min-h-[380px]">
-              <img className="absolute inset-0 h-full w-full object-cover opacity-75" src="https://images.unsplash.com/photo-1604973104381-870c92f10343?auto=format&fit=crop&w=1400&q=88" alt="Suasana workshop batik" />
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#10233f]/55" />
+            <div className="relative min-h-[300px] sm:min-h-[380px] bg-slate-900">
+              <img className="absolute inset-0 h-full w-full object-cover opacity-65" src="/images/batik_23.webp" alt="Karya wastra galeri workshop batik" />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#10233f]/75" />
                 <div className="absolute bottom-8 left-8 rounded-xl bg-white p-5 text-[#10233f] shadow-xl">
                 <Icon name="map" size={28} />
                 <p className="mt-3 text-xs font-bold uppercase tracking-[0.2em] text-[#c51f5d]">Workshop & Galeri</p>
@@ -410,13 +287,14 @@ function App() {
           </div>
         </section>
 
+        {/* ─── Kontak / Form Konsultasi ─── */}
         <section className="bg-[#10233f] py-12 text-white sm:py-16 lg:py-20" id="kontak">
           <div className="mx-auto grid max-w-7xl gap-8 px-5 lg:grid-cols-[0.8fr_1.2fr] lg:gap-10 lg:px-10">
             <div>
               <p className="eyebrow text-[#eccf9e]"><span className="h-px w-8 bg-[#eccf9e]" /> Konsultasi Batik Custom</p>
               <h2 className="section-title">Ceritakan batik yang ingin Anda buat.</h2>
               <div className="mt-6 flex flex-wrap gap-3">
-                <a className="contact-pill" href={`tel:+${whatsappNumber}`}><Icon name="phone" /> Telepon Langsung</a>
+                <a className="contact-pill" href={instagramUrl} target="_blank" rel="noreferrer"><Icon name="instagram" /> Instagram</a>
                 <a className="contact-pill" href={whatsappUrl} target="_blank" rel="noreferrer"><Icon name="whatsapp" /> Chat WhatsApp</a>
               </div>
             </div>
@@ -437,19 +315,21 @@ function App() {
         </section>
       </main>
 
-      <footer className="bg-[#0b172a] py-7 text-white/60">
+      <footer className="bg-[#0b172a] py-7 pb-28 md:pb-7 text-white/60">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-5 text-center text-sm sm:flex-row sm:text-left lg:px-10">
           <div className="flex items-center gap-3 text-white">
             <span className="font-serif text-2xl">FuRi Valentine</span><span className="h-4 w-px bg-white/20" /><span className="text-xs uppercase tracking-widest text-[#d8ab5d]">Batik Bekasi</span>
           </div>
           <p>© 2025 FuRi Valentine Batik. Karya dari Bekasi untuk Nusantara.</p>
-          <a className="flex items-center gap-2 text-white hover:text-[#d8ab5d]" href="#" aria-label="Instagram"><Icon name="instagram" /> Instagram</a>
+          <a className="flex items-center gap-2 text-white hover:text-[#d8ab5d]" href={instagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram"><Icon name="instagram" /> Instagram</a>
         </div>
       </footer>
 
-      <a className="floating-wa group" href={whatsappUrl} target="_blank" rel="noreferrer" aria-label="Chat WhatsApp">
-        <span className="hidden font-medium sm:block">Tanya kami</span><Icon name="whatsapp" size={22} />
-      </a>
+
+      {/* Mobile Sticky Bottom Navigation Bar */}
+      <MobileBottomBar whatsappUrl={whatsappUrl} />
+
+
     </div>
   );
 }

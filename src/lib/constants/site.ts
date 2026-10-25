@@ -7,9 +7,9 @@ export const SITE_CONFIG = {
   description:
     "FuRi Valentine Batik (Valentine Batik) adalah UMKM pelopor pelestarian seni batik di Kota Bekasi. Menghadirkan batik tulis dan cap adiluhung dengan motif ikonik khas Bekasi—seperti Ikan Gabus, Bambu Runcing Patriot, Rawa Tembaga, dan Teratai—berpadu kemewahan wastra nusantara.",
   url: "https://furivalentinbatik.com",
-  phone: "+62 812-8800-2007",
-  whatsappNumber: "6281288002007",
-  whatsappUrl: "https://wa.me/6281288002007",
+  phone: "0858-6614-0707",
+  whatsappNumber: "6285866140707",
+  whatsappUrl: "https://wa.me/6285866140707",
   mapsUrl:
     "https://www.google.com/maps/search/?api=1&query=Jl.+Transad+X+No.+1A,+Jatiranggon,+Jatisampurna,+Kota+Bekasi",
   address: {
@@ -21,8 +21,8 @@ export const SITE_CONFIG = {
     full: "Jl. Transad X No. 1A, RT 01/08, Kel. Jatiranggon, Kec. Jatisampurna, Kota Bekasi, Jawa Barat 17432",
   },
   contact: {
-    phone: "+62 812-8800-2007",
-    whatsapp: "6281288002007",
+    phone: "0858-6614-0707",
+    whatsapp: "6285866140707",
     email: "kontak@furivalentinebatik.com",
     address:
       "Jl. Transad X No. 1A, RT 01/08, Kel. Jatiranggon, Kec. Jatisampurna, Kota Bekasi, Jawa Barat 17432",
@@ -33,12 +33,12 @@ export const SITE_CONFIG = {
     hours: "Senin - Sabtu: 08:30 - 17:30 WIB (Minggu dengan Reservasi)",
   },
   social: {
-    instagram: "https://instagram.com/valentinebatik_bekasi",
+    instagram: "https://www.instagram.com/indahturiri/",
     facebook: "https://facebook.com/valentinebatikbekasi",
     youtube: "https://youtube.com/@valentinebatikbekasi",
   },
   socials: {
-    instagram: "https://instagram.com/valentinebatik_bekasi",
+    instagram: "https://www.instagram.com/indahturiri/",
     facebook: "https://facebook.com/valentinebatikbekasi",
     youtube: "https://youtube.com/@valentinebatikbekasi",
   },

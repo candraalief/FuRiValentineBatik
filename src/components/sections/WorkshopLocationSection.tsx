@@ -1,7 +1,8 @@
 import React from "react";
 import { SITE_CONFIG } from "@/lib/constants/site";
 import { Container } from "../layout/Container";
-import { MapPin, Phone, MessageSquare, Clock, ExternalLink, Navigation, Sparkles } from "lucide-react";
+import { MapPin, MessageSquare, Clock, ExternalLink, Navigation, Sparkles } from "lucide-react";
+import { InstagramIcon } from "@/components/svg";
 
 export const WorkshopLocationSection: React.FC = () => {
   return (
@@ -78,11 +79,13 @@ export const WorkshopLocationSection: React.FC = () => {
               </a>
 
               <a
-                href={`tel:${SITE_CONFIG.contact.phone.replace(/[^0-9+]/g, "")}`}
+                href={SITE_CONFIG.socials.instagram}
+                target="_blank"
+                rel="noreferrer"
                 className="inline-flex items-center gap-1.5 rounded-xl border border-stone-300 bg-white px-4 py-3 text-xs font-semibold text-stone-700 hover:bg-stone-50 transition-colors"
               >
-                <Phone className="h-4 w-4 text-stone-600" />
-                Telepon Langsung
+                <InstagramIcon className="h-4 w-4 text-[#E1306C]" />
+                Instagram @indahturiri
               </a>
             </div>
           </div>

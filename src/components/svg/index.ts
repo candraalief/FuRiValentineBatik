@@ -11,3 +11,4 @@ export { CantingIcon } from "./icons/CantingIcon";
 export { EcoDyeIcon } from "./icons/EcoDyeIcon";
 export { HandmadeIcon } from "./icons/HandmadeIcon";
 export { SilkIcon } from "./icons/SilkIcon";
+export { InstagramIcon } from "./icons/InstagramIcon";

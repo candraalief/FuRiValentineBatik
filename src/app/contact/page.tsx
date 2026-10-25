@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import { Container } from "@/components/layout/Container";
 import { ContactForm } from "@/features/contact/components/ContactForm";
 import { SITE_CONFIG } from "@/lib/constants/site";
-import { MapPin, Phone, Mail, Clock, MessageSquare, ExternalLink, Navigation, Sparkles } from "lucide-react";
-import { CantingIcon } from "@/components/svg";
+import { MapPin, Mail, Clock, MessageSquare, ExternalLink, Navigation, Sparkles } from "lucide-react";
+import { CantingIcon, InstagramIcon } from "@/components/svg";
 
 export const metadata: Metadata = {
   title: "Kontak & Workshop Jatiranggon Bekasi — FuRi Valentine Batik",
@@ -64,14 +64,22 @@ export default function ContactPage() {
                 </div>
 
                 <div className="flex items-start gap-3.5">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-800">
-                    <Phone className="h-4 w-4" />
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-pink-50 text-pink-700">
+                    <InstagramIcon className="h-4 w-4" />
                   </div>
                   <div>
                     <strong className="block text-stone-900 font-semibold text-xs uppercase tracking-wide">
-                      Telepon Langsung
+                      Instagram Resmi
                     </strong>
-                    <span className="text-xs leading-relaxed">{SITE_CONFIG.contact.phone}</span>
+                    <a
+                      href={SITE_CONFIG.socials.instagram}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-xs leading-relaxed text-amber-900 font-medium hover:underline flex items-center gap-1"
+                    >
+                      @valentinebatik
+                      <ExternalLink className="h-3 w-3 opacity-70" />
+                    </a>
                   </div>
                 </div>
 

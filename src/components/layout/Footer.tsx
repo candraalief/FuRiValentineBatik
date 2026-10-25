@@ -3,7 +3,7 @@ import Link from "next/link";
 import { SITE_CONFIG } from "@/lib/constants/site";
 import { MAIN_NAVIGATION, FOOTER_COLLECTIONS } from "@/lib/constants/navigation";
 import { FuRiLogo, KawungPattern } from "@/components/svg";
-import { MapPin, Phone, Mail, Clock, MessageSquare, ExternalLink } from "lucide-react";
+import { MapPin, Mail, Clock, MessageSquare, ExternalLink } from "lucide-react";
 import { Container } from "./Container";
 
 export const Footer: React.FC = () => {
@@ -121,8 +121,15 @@ export const Footer: React.FC = () => {
                 <span>{SITE_CONFIG.contact.hours}</span>
               </li>
               <li className="flex items-center gap-2.5">
-                <Phone className="h-4 w-4 text-amber-500 shrink-0" />
-                <span>{SITE_CONFIG.contact.phone}</span>
+                <a
+                  href={`https://wa.me/${SITE_CONFIG.contact.whatsapp}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-2.5 hover:text-amber-400 transition-colors"
+                >
+                  <MessageSquare className="h-4 w-4 text-emerald-400 shrink-0" />
+                  <span>WhatsApp: {SITE_CONFIG.phone}</span>
+                </a>
               </li>
               <li className="pt-1">
                 <a
