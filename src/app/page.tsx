@@ -191,7 +191,16 @@ function App() {
             </div>
             <div className="relative isolate min-h-[360px] sm:min-h-[480px] lg:min-h-[530px]">
               <div className="absolute left-0 top-0 z-10 h-[92%] sm:h-[88%] w-[72%] sm:w-[74%] overflow-hidden">
-                <img className="h-full w-full object-contain sm:object-cover object-center sm:object-top" src="/images/batik_04_hero_transparent.png" alt="Busana Tunik Batik FuRi Valentine" />
+                <img
+                  className="h-full w-full object-contain sm:object-cover object-center sm:object-top"
+                  src="/images/batik_04_hero_transparent.webp"
+                  alt="Busana Tunik Batik FuRi Valentine"
+                  width={753}
+                  height={1080}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                />
               </div>
               <HeroFabricSlideshow />
             </div>

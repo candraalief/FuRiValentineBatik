@@ -38,7 +38,8 @@ export function HeroFabricSlideshow() {
             alt={fabric.alt}
             width={1080}
             height={1350}
-            loading="eager"
+            loading={index === 0 ? "eager" : "lazy"}
+            priority={index === 0}
             unoptimized
             className="absolute max-w-none"
             style={{ width: `${1080 / 840 * 100}%`, height: `${1350 / 840 * 100}%`, left: `${-120 / 840 * 100}%`, top: `${-378 / 840 * 100}%` }}
