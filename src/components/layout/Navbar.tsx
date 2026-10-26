@@ -1,12 +1,14 @@
 "use client";
 
+import { WhatsAppIcon } from "@/components/common/WhatsAppIcon";
+
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MAIN_NAVIGATION } from "@/lib/constants/navigation";
 import { SITE_CONFIG } from "@/lib/constants/site";
 import { FuRiLogo } from "@/components/svg";
-import { Menu, X, MessageSquare, MapPin, Sparkles } from "lucide-react";
+import { Menu, X, MapPin, Sparkles } from "lucide-react";
 import { Container } from "./Container";
 
 export const Navbar: React.FC = () => {
@@ -88,7 +90,7 @@ export const Navbar: React.FC = () => {
               rel="noreferrer"
               className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow-md transition-all hover:bg-emerald-500"
             >
-              <MessageSquare className="h-4 w-4" />
+              <WhatsAppIcon className="h-4 w-4" />
               <span className="hidden sm:inline">WhatsApp Konsultasi</span>
               <span className="sm:hidden">WhatsApp</span>
             </a>
@@ -139,7 +141,7 @@ export const Navbar: React.FC = () => {
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 py-2.5 text-xs font-bold text-white"
                 >
-                  <MessageSquare className="h-4 w-4" />
+                  <WhatsAppIcon className="h-4 w-4" />
                   Hubungi via WhatsApp
                 </a>
               </div>

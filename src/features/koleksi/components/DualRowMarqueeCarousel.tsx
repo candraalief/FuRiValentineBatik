@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 interface ProductItem {
   id: string;
@@ -177,166 +177,160 @@ const ROW_2_ITEMS: ProductItem[] = [
   },
 ];
 
-// Helper row with high-performance requestAnimationFrame loop and pointer drag support
-const DraggableMarqueeRow: React.FC<{
+// Each copy owns its trailing gap; measuring one group gives the exact loop distance.
+interface DraggableMarqueeRowProps {
   items: ProductItem[];
   direction: "left" | "right";
   speed?: number;
   className?: string;
-}> = ({ items, direction, speed = 36, className = "" }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  isPaused: boolean;
+  onTogglePause: () => void;
+}
+
+const DraggableMarqueeRow: React.FC<DraggableMarqueeRowProps> = ({
+  items,
+  direction,
+  speed = 36,
+  className = "",
+  isPaused,
+  onTogglePause,
+}) => {
+  const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-
+  const groupRef = useRef<HTMLDivElement>(null);
   const offsetRef = useRef(0);
-  const isDraggingRef = useRef(false);
-  const isPointerDownRef = useRef(false);
-  const isHoveredRef = useRef(false);
-  const startPosRef = useRef({ x: 0, y: 0 });
-  const lastXRef = useRef(0);
-  const velocityRef = useRef(0);
-  const hasCapturedPointerRef = useRef(false);
+  const widthRef = useRef(0);
+  const pointerRef = useRef<{ id: number; x: number; y: number; dragging: boolean } | null>(null);
+  const isPausedRef = useRef(isPaused);
+  isPausedRef.current = isPaused;
 
-  // Quadruple items to guarantee seamless looping without empty space when dragged in either direction
-  const duplicatedItems = useMemo(() => [...items, ...items, ...items, ...items], [items]);
+  const renderOffset = () => {
+    const width = widthRef.current;
+    if (!width || !trackRef.current) return;
+    // Always keep one complete copy before the visible region, in either direction.
+    offsetRef.current = ((offsetRef.current % width) + width) % width - width;
+    trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+  };
 
   useEffect(() => {
-    let animId: number;
-    let lastTime = performance.now();
-
-    // Start from middle chunk so left and right drags both have continuous content
-    if (trackRef.current) {
-      const chunkWidth = trackRef.current.scrollWidth / 4;
-      offsetRef.current = -chunkWidth;
-      trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
-    }
-
-    const loop = (now: number) => {
-      const dt = Math.min((now - lastTime) / 1000, 0.1);
-      lastTime = now;
-
-      const track = trackRef.current;
-      if (track) {
-        const chunkWidth = track.scrollWidth / 4;
-
-        if (!isDraggingRef.current && chunkWidth > 0) {
-          if (Math.abs(velocityRef.current) > 0.4) {
-            offsetRef.current += velocityRef.current;
-            velocityRef.current *= 0.94; // inertia friction
-          } else {
-            velocityRef.current = 0;
-            if (!isHoveredRef.current) {
-              const delta = (direction === "left" ? -speed : speed) * dt;
-              offsetRef.current += delta;
-            }
-          }
-
-          // Seamless modulo wrap
-          while (offsetRef.current > 0) {
-            offsetRef.current -= chunkWidth;
-          }
-          while (offsetRef.current < -chunkWidth * 2) {
-            offsetRef.current += chunkWidth;
-          }
-
-          track.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
-        }
-      }
-
-      animId = requestAnimationFrame(loop);
+    const group = groupRef.current;
+    const viewport = viewportRef.current;
+    if (!group || !viewport) return;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const measure = () => {
+      const oldWidth = widthRef.current;
+      const progress = oldWidth ? offsetRef.current / oldWidth : -1;
+      widthRef.current = group.getBoundingClientRect().width;
+      offsetRef.current = progress * widthRef.current;
+      renderOffset();
     };
-
-    animId = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(animId);
+    const observer = new ResizeObserver(measure);
+    observer.observe(group);
+    measure();
+    let frame: number;
+    let previous = performance.now();
+    const tick = (now: number) => {
+      const elapsed = Math.min((now - previous) / 1000, 0.05);
+      previous = now;
+      if (!motion.matches && !isPausedRef.current && !pointerRef.current) {
+        offsetRef.current += (direction === "left" ? -1 : 1) * speed * elapsed;
+        renderOffset();
+      }
+      frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(frame);
+    };
   }, [direction, speed]);
 
-  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    isPointerDownRef.current = true;
-    isDraggingRef.current = false;
-    hasCapturedPointerRef.current = false;
-    startPosRef.current = { x: e.clientX, y: e.clientY };
-    lastXRef.current = e.clientX;
-    velocityRef.current = 0;
-  };
-
-  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!isPointerDownRef.current) return;
-
-    const dx = e.clientX - lastXRef.current;
-    const totalDx = e.clientX - startPosRef.current.x;
-    const totalDy = e.clientY - startPosRef.current.y;
-
-    if (!isDraggingRef.current) {
-      if (Math.abs(totalDx) > 6) {
-        if (Math.abs(totalDx) > Math.abs(totalDy)) {
-          isDraggingRef.current = true;
-          try {
-            e.currentTarget.setPointerCapture(e.pointerId);
-            hasCapturedPointerRef.current = true;
-          } catch {
-            // fallback
-          }
-        } else {
-          // Native vertical scroll gesture
-          isPointerDownRef.current = false;
-          return;
-        }
-      }
-    }
-
-    if (isDraggingRef.current && trackRef.current) {
-      offsetRef.current += dx;
-      velocityRef.current = dx;
-      lastXRef.current = e.clientX;
-
-      const chunkWidth = trackRef.current.scrollWidth / 4;
-      if (chunkWidth > 0) {
-        while (offsetRef.current > 0) {
-          offsetRef.current -= chunkWidth;
-        }
-        while (offsetRef.current < -chunkWidth * 2) {
-          offsetRef.current += chunkWidth;
-        }
-      }
-
-      trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
-    }
-  };
-
-  const handlePointerUpOrCancel = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (hasCapturedPointerRef.current) {
+  const releasePointer = (event: React.PointerEvent<HTMLDivElement>) => {
+    const currentPointer = pointerRef.current;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
       try {
-        e.currentTarget.releasePointerCapture(e.pointerId);
+        event.currentTarget.releasePointerCapture(event.pointerId);
       } catch {
         // ignore
       }
-      hasCapturedPointerRef.current = false;
     }
-    isPointerDownRef.current = false;
-    isDraggingRef.current = false;
+    pointerRef.current = null;
+    // Jika ditekan / diklik tanpa digeser (dragging), jeda atau lanjutkan pergerakan
+    if (currentPointer && !currentPointer.dragging) {
+      onTogglePause();
+    }
+  };
+
+  const cancelPointer = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      try {
+        event.currentTarget.releasePointerCapture(event.pointerId);
+      } catch {
+        // ignore
+      }
+    }
+    pointerRef.current = null;
   };
 
   return (
     <div
-      ref={containerRef}
-      className={`overflow-hidden cursor-grab active:cursor-grabbing touch-pan-y select-none ${className}`}
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUpOrCancel}
-      onPointerCancel={handlePointerUpOrCancel}
-      onMouseEnter={() => {
-        isHoveredRef.current = true;
+      ref={viewportRef}
+      role="region"
+      aria-label={
+        direction === "left"
+          ? `Koleksi busana batik (${isPaused ? "dijeda" : "berjalan"})`
+          : `Koleksi kain batik (${isPaused ? "dijeda" : "berjalan"})`
+      }
+      title={isPaused ? "Klik untuk melanjutkan pergerakan" : "Klik untuk menjeda pergerakan"}
+      tabIndex={0}
+      className={`product-marquee overflow-hidden cursor-grab active:cursor-grabbing touch-pan-y select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c51f5d] ${className}`}
+      onKeyDown={(event) => {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+          event.preventDefault();
+          offsetRef.current += event.key === "ArrowLeft" ? 220 : -220;
+          renderOffset();
+          return;
+        }
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onTogglePause();
+        }
       }}
-      onMouseLeave={() => {
-        isHoveredRef.current = false;
+      onPointerDown={(event) => {
+        if (event.button !== 0 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        pointerRef.current = { id: event.pointerId, x: event.clientX, y: event.clientY, dragging: false };
       }}
+      onPointerMove={(event) => {
+        const pointer = pointerRef.current;
+        if (!pointer || pointer.id !== event.pointerId) return;
+        const dx = event.clientX - pointer.x;
+        const dy = event.clientY - pointer.y;
+        if (!pointer.dragging) {
+          if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+          if (Math.abs(dy) > Math.abs(dx)) { pointerRef.current = null; return; }
+          pointer.dragging = true;
+          event.currentTarget.setPointerCapture(event.pointerId);
+        }
+        offsetRef.current += dx;
+        pointer.x = event.clientX;
+        renderOffset();
+      }}
+      onPointerUp={releasePointer}
+      onPointerCancel={cancelPointer}
+      onLostPointerCapture={() => { pointerRef.current = null; }}
+      onPointerLeave={() => { if (!pointerRef.current?.dragging) pointerRef.current = null; }}
     >
-      <div
-        ref={trackRef}
-        className="flex w-max gap-3 sm:gap-4 py-1 will-change-transform"
-        style={{ transform: "translate3d(0, 0, 0)" }}
-      >
-        {duplicatedItems.map((product, idx) => (
-          <MarqueeCard key={`${product.id}-${idx}`} product={product} />
+      <div ref={trackRef} className="product-marquee-track flex w-max will-change-transform">
+        {[0, 1, 2, 3].map((copy) => (
+          <div
+            key={copy}
+            ref={copy === 0 ? groupRef : undefined}
+            aria-hidden={copy === 1 ? undefined : true}
+            className="product-marquee-group flex shrink-0 gap-3 pr-3 py-2 sm:gap-4 sm:pr-4"
+          >
+            {items.map((product) => <MarqueeCard key={product.id} product={product} />)}
+          </div>
         ))}
       </div>
     </div>
@@ -348,42 +342,50 @@ interface DualRowMarqueeCarouselProps {
 }
 
 export const DualRowMarqueeCarousel: React.FC<DualRowMarqueeCarouselProps> = () => {
+  const [isPaused, setIsPaused] = useState(false);
+
+  const togglePause = useCallback(() => {
+    setIsPaused((prev) => !prev);
+  }, []);
+
   return (
     <div className="relative w-full overflow-hidden py-3 select-none [contain:paint]">
       {/* Row 1: Right to Left */}
-      <DraggableMarqueeRow items={ROW_1_ITEMS} direction="left" speed={36} className="mb-3.5 sm:mb-4" />
+      <DraggableMarqueeRow
+        items={ROW_1_ITEMS}
+        direction="left"
+        speed={36}
+        className="mb-5 sm:mb-6"
+        isPaused={isPaused}
+        onTogglePause={togglePause}
+      />
 
       {/* Row 2: Left to Right (Opposite Direction) */}
-      <DraggableMarqueeRow items={ROW_2_ITEMS} direction="right" speed={36} />
+      <DraggableMarqueeRow
+        items={ROW_2_ITEMS}
+        direction="right"
+        speed={36}
+        isPaused={isPaused}
+        onTogglePause={togglePause}
+      />
     </div>
   );
 };
 
-const MarqueeCard: React.FC<{ product: ProductItem }> = ({ product }) => {
-  return (
-    <article className="group relative w-[185px] sm:w-[210px] md:w-[230px] shrink-0 overflow-hidden rounded-xl border border-[#10233f]/10 bg-white [contain:content] transition-shadow duration-200 hover:border-[#c51f5d]/40 hover:shadow-md pointer-events-auto select-none">
-      {/* Product Image */}
-      <div className="relative aspect-[4/5] w-full overflow-hidden bg-white">
-        <img
-          loading="lazy"
-          decoding="async"
-          draggable={false}
-          src={product.image}
-          alt={product.title}
-          width={230}
-          height={288}
-          className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 pointer-events-none select-none"
-        />
-        {/* Soft subtle vignette */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent pointer-events-none" />
-      </div>
-
-      {/* Product Details: Satu judul utama konsisten berwarna hitam/navy */}
-      <div className="p-3 text-center">
-        <h3 className="font-serif text-xs sm:text-sm font-semibold text-[#10233f] truncate group-hover:text-[#c51f5d] transition-colors">
-          {product.title}
-        </h3>
-      </div>
-    </article>
-  );
-};
+const MarqueeCard: React.FC<{ product: ProductItem }> = ({ product }) => (
+  <article className="group w-[185px] shrink-0 select-none overflow-hidden rounded-xl border border-[#10233f]/10 bg-white sm:w-[210px] md:w-[230px]">
+    <div className="relative aspect-[4/5] overflow-hidden bg-white">
+      <img
+        decoding="async"
+        draggable={false}
+        src={product.image}
+        alt={product.title}
+        width={230}
+        height={288}
+        className="h-full w-full object-cover pointer-events-none"
+      />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-black/35 to-transparent" />
+    </div>
+    <h3 className="px-3 py-3 text-center text-sm font-bold leading-snug text-[#10233f]">{product.title}</h3>
+  </article>
+);

@@ -1,9 +1,10 @@
+import { WhatsAppIcon } from "@/components/common/WhatsAppIcon";
 import React from "react";
 import Link from "next/link";
 import { SITE_CONFIG } from "@/lib/constants/site";
 import { MAIN_NAVIGATION, FOOTER_COLLECTIONS } from "@/lib/constants/navigation";
 import { FuRiLogo, KawungPattern } from "@/components/svg";
-import { MapPin, Mail, Clock, MessageSquare, ExternalLink } from "lucide-react";
+import { MapPin, Mail, Clock, ExternalLink } from "lucide-react";
 import { Container } from "./Container";
 
 export const Footer: React.FC = () => {
@@ -63,7 +64,7 @@ export const Footer: React.FC = () => {
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-700/80 text-white transition-colors hover:bg-emerald-600"
                 aria-label="WhatsApp"
               >
-                <MessageSquare className="h-4 w-4" />
+                <WhatsAppIcon className="h-4 w-4" />
               </a>
             </div>
           </div>
@@ -127,7 +128,7 @@ export const Footer: React.FC = () => {
                   rel="noreferrer"
                   className="flex items-center gap-2.5 hover:text-amber-400 transition-colors"
                 >
-                  <MessageSquare className="h-4 w-4 text-emerald-400 shrink-0" />
+                  <WhatsAppIcon className="h-4 w-4 text-emerald-400 shrink-0" />
                   <span>WhatsApp: {SITE_CONFIG.phone}</span>
                 </a>
               </li>

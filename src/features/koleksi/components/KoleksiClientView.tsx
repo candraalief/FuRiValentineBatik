@@ -171,7 +171,7 @@ export const KoleksiClientView: React.FC<KoleksiClientViewProps> = ({
             <span className="h-4 w-px bg-white/20" />
             <span className="text-xs uppercase tracking-widest text-[#d8ab5d]">Katalog Lengkap</span>
           </div>
-          <p>© 2025 FuRi Valentine Batik. Semua motif orisinal dilindungi hak cipta.</p>
+          <p>© 2026 FuRi Valentine Batik. Semua motif orisinal dilindungi hak cipta.</p>
         </div>
       </footer>
 

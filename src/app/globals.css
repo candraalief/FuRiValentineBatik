@@ -19,12 +19,8 @@ html {
 
 body {
   margin: 0;
-  background: linear-gradient(135deg, #ffffff 0%, #f1f7ff 48%, #d9eaff 100%);
+  background: #faf9f6;
   font-family: "DM Sans", sans-serif;
-  background-image:
-    linear-gradient(45deg, transparent 46%, rgb(16 35 63 / 0.025) 47% 53%, transparent 54%),
-    linear-gradient(-45deg, transparent 46%, rgb(197 31 93 / 0.018) 47% 53%, transparent 54%);
-  background-size: 36px 36px;
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
@@ -43,6 +39,7 @@ a {
 
 @layer components {
 .button-primary,
+.button-whatsapp,
 .button-outline,
 .button-ghost,
 .button-gold,
@@ -70,6 +67,16 @@ a {
   transform: translateY(-2px);
 }
 
+.button-whatsapp {
+  border: 1px solid #159b10;
+  background: white;
+  color: #137d10;
+}
+
+.button-whatsapp:hover {
+  background: #f0fdf0;
+}
+
 .button-outline {
   border: 1px solid rgb(42 29 26 / 0.25);
 }
@@ -93,6 +100,7 @@ a {
 }
 
 .button-primary:focus-visible,
+.button-whatsapp:focus-visible,
 .button-outline:focus-visible,
 .button-ghost:focus-visible,
 .button-gold:focus-visible,
@@ -170,7 +178,6 @@ a {
 }
 
 .section-title {
-  margin-top: 0.75rem;
   font-family: "DM Serif Display", serif;
   font-size: clamp(2rem, 3.5vw, 3rem);
   line-height: 1.15;
@@ -250,6 +257,10 @@ a {
 .form-input:focus {
   border-color: #c51f5d;
   box-shadow: 0 0 0 3px rgb(197 31 93 / 0.08);
+}
+
+:is(#galeri, #kontak) :is(.button-gold, .button-dark-outline, .button-primary, .contact-pill, .form-input) {
+  border-radius: 6px;
 }
 
 .batik-mark {
@@ -338,4 +349,37 @@ a {
   *::after {
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Equal-width copies include their own spacing, so the seam has no empty tail. */
+.service-strip {
+  overflow: hidden;
+  border-block: 1px solid rgb(16 35 63 / 0.15);
+  padding-block: 1rem;
+}
+.service-strip-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 32s linear infinite;
+}
+.service-strip-group {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-around;
+  min-width: 100vw;
+  gap: 3rem;
+  padding-right: 3rem;
+  font-size: 0.875rem;
+  color: #46566e;
+}
+.service-strip-group span { white-space: nowrap; }
+.service-strip:hover .service-strip-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .service-strip { overflow-x: auto; }
+  .service-strip-track { animation: none; }
+  .service-strip-group[aria-hidden="true"] { display: none; }
+  .product-marquee { overflow-x: auto; touch-action: auto; }
+  .product-marquee-track { transform: none !important; }
+  .product-marquee-group[aria-hidden="true"] { display: none; }
 }
