@@ -6,15 +6,17 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://valentinebatik.verc
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "FuRi Valentine Batik — Pelopor Batik Motif Khas Kota Bekasi",
-    template: "%s | FuRi Valentine Batik",
+    default: "Valentine Batik — FuRi Valentine Batik Motif Khas Kota Bekasi",
+    template: "%s | Valentine Batik",
   },
   description:
-    "FuRi Valentine Batik (Valentine Batik) didirikan oleh Ibu Indah Turiri sejak 2007 di Jatiranggon, Bekasi. Menyediakan seragam batik sekolah, seragam kantor dinas, atasan wanita, hem, kemeja pria, bahan batik tulis & cap, udeng, scarf, dan batik custom khas Bekasi.",
+    "Valentine Batik (FuRi Valentine Batik) didirikan oleh Ibu Indah Turiri sejak 2007 di Jatiranggon, Bekasi. Menyediakan seragam batik sekolah, seragam kantor dinas, atasan wanita, hem, kemeja pria, bahan batik tulis & cap, udeng, scarf, dan batik custom khas Bekasi.",
   keywords: [
-    "Batik Bekasi",
-    "FuRi Valentine Batik",
     "Valentine Batik",
+    "Batik Valentine",
+    "FuRi Valentine Batik",
+    "Batik Bekasi",
+    "Valentine Batik Bekasi",
     "Batik Khas Bekasi",
     "Seragam Batik Sekolah Bekasi",
     "Seragam Batik Kantor",
@@ -29,7 +31,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Indah Turiri - FuRi Valentine Batik" }],
   creator: "FuRi Valentine Batik",
-  publisher: "FuRi Valentine Batik",
+  publisher: "Valentine Batik",
   robots: {
     index: true,
     follow: true,
@@ -51,8 +53,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "id_ID",
     url: siteUrl,
-    siteName: "FuRi Valentine Batik",
-    title: "FuRi Valentine Batik — Pelopor Seni Batik Motif Khas Kota Bekasi",
+    siteName: "Valentine Batik",
+    title: "Valentine Batik — FuRi Valentine Batik Motif Khas Kota Bekasi",
     description:
       "Seragam batik sekolah, batik instansi & korporat, busana wanita, kemeja pria, bahan kain batik tulis dan cap khas Bekasi.",
     images: [
@@ -66,7 +68,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "FuRi Valentine Batik — Batik Khas Bekasi",
+    title: "Valentine Batik — FuRi Valentine Batik Bekasi",
     description:
       "Penyedia seragam batik kantor, sekolah, dan kain batik tulis & cap khas Kota Bekasi.",
     images: ["/images/batik_04.webp"],
@@ -78,44 +80,66 @@ export const metadata: Metadata = {
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": ["LocalBusiness", "ClothingStore"],
-  name: "FuRi Valentine Batik",
-  alternateName: ["Valentine Batik", "FuRi Batik Bekasi"],
-  image: `${siteUrl}/images/batik_04.webp`,
-  logo: `${siteUrl}/images/logo_furi.png`,
-  description:
-    "Pelopor seni batik khas Kota Bekasi sejak 2007. Melayani pengadaan seragam batik sekolah, seragam kantor, instansi kedinasan, busana pesta, kemeja, dan kain batik tulis serta cap adiluhung.",
-  url: siteUrl,
-  telephone: "+6285866140707",
-  founder: {
-    "@type": "Person",
-    name: "Indah Turiri",
-  },
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Jl. Transad X No. 1A, RT 01/08",
-    addressLocality: "Jatiranggon, Jatisampurna",
-    addressRegion: "Kota Bekasi, Jawa Barat",
-    postalCode: "17432",
-    addressCountry: "ID",
-  },
-  geo: {
-    "@type": "GeoCoordinates",
-    latitude: -6.3458,
-    longitude: 106.9284,
-  },
-  openingHoursSpecification: [
+  "@graph": [
     {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-      opens: "08:30",
-      closes: "17:30",
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      url: siteUrl,
+      name: "Valentine Batik",
+      alternateName: [
+        "FuRi Valentine Batik",
+        "FuRi Valentine",
+        "Valentine Batik Bekasi",
+      ],
+      description:
+        "Pusat batik khas Bekasi, seragam batik kantor, sekolah, dan kain batik adiluhung karya Valentine Batik (FuRi Valentine).",
+      inLanguage: "id-ID",
+      publisher: {
+        "@id": `${siteUrl}/#organization`,
+      },
     },
-  ],
-  priceRange: "$$",
-  sameAs: [
-    "https://www.instagram.com/indahturiri/",
-    "https://facebook.com/valentinebatikbekasi",
+    {
+      "@type": ["LocalBusiness", "ClothingStore"],
+      "@id": `${siteUrl}/#organization`,
+      name: "FuRi Valentine Batik",
+      alternateName: ["Valentine Batik", "FuRi Batik Bekasi"],
+      image: `${siteUrl}/images/batik_04.webp`,
+      logo: `${siteUrl}/images/logo_furi.png`,
+      description:
+        "Pelopor seni batik khas Kota Bekasi sejak 2007. Melayani pengadaan seragam batik sekolah, seragam kantor, instansi kedinasan, busana pesta, kemeja, dan kain batik tulis serta cap adiluhung.",
+      url: siteUrl,
+      telephone: "+6285866140707",
+      founder: {
+        "@type": "Person",
+        name: "Indah Turiri",
+      },
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Jl. Transad X No. 1A, RT 01/08",
+        addressLocality: "Jatiranggon, Jatisampurna",
+        addressRegion: "Kota Bekasi, Jawa Barat",
+        postalCode: "17432",
+        addressCountry: "ID",
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: -6.3458,
+        longitude: 106.9284,
+      },
+      openingHoursSpecification: [
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          opens: "08:30",
+          closes: "17:30",
+        },
+      ],
+      priceRange: "$$",
+      sameAs: [
+        "https://www.instagram.com/indahturiri/",
+        "https://facebook.com/valentinebatikbekasi",
+      ],
+    },
   ],
 };
 
