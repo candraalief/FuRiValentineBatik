@@ -177,7 +177,6 @@ const ROW_2_ITEMS: ProductItem[] = [
   },
 ];
 
-// Each copy owns its trailing gap; measuring one group gives the exact loop distance.
 interface DraggableMarqueeRowProps {
   items: ProductItem[];
   direction: "left" | "right";
@@ -190,7 +189,7 @@ interface DraggableMarqueeRowProps {
 const DraggableMarqueeRow: React.FC<DraggableMarqueeRowProps> = ({
   items,
   direction,
-  speed = 36,
+  speed = 42,
   className = "",
   isPaused,
   onTogglePause,
@@ -200,53 +199,96 @@ const DraggableMarqueeRow: React.FC<DraggableMarqueeRowProps> = ({
   const groupRef = useRef<HTMLDivElement>(null);
   const offsetRef = useRef(0);
   const widthRef = useRef(0);
-  const pointerRef = useRef<{ id: number; x: number; y: number; dragging: boolean } | null>(null);
+  const velocityRef = useRef(0);
+  const pointerRef = useRef<{
+    id: number;
+    startX: number;
+    startY: number;
+    lastX: number;
+    lastTime: number;
+    dragging: boolean;
+  } | null>(null);
   const isPausedRef = useRef(isPaused);
   isPausedRef.current = isPaused;
 
-  const renderOffset = () => {
+  const applyOffset = useCallback(() => {
     const width = widthRef.current;
     if (!width || !trackRef.current) return;
-    // Always keep one complete copy before the visible region, in either direction.
-    offsetRef.current = ((offsetRef.current % width) + width) % width - width;
-    trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
-  };
+
+    // Keep offset stably within [-2 * width, -width] without modulo precision drift
+    while (offsetRef.current <= -2 * width) {
+      offsetRef.current += width;
+    }
+    while (offsetRef.current > -width) {
+      offsetRef.current -= width;
+    }
+
+    trackRef.current.style.transform = `translate3d(${offsetRef.current.toFixed(2)}px, 0, 0)`;
+  }, []);
 
   useEffect(() => {
     const group = groupRef.current;
     const viewport = viewportRef.current;
     if (!group || !viewport) return;
+
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
     const measure = () => {
+      const newWidth = group.getBoundingClientRect().width;
+      if (!newWidth || Math.abs(newWidth - widthRef.current) < 0.5) return;
       const oldWidth = widthRef.current;
-      const progress = oldWidth ? offsetRef.current / oldWidth : -1;
-      widthRef.current = group.getBoundingClientRect().width;
-      offsetRef.current = progress * widthRef.current;
-      renderOffset();
+      widthRef.current = newWidth;
+      if (oldWidth > 0) {
+        const progress = (offsetRef.current + oldWidth) / oldWidth;
+        offsetRef.current = -newWidth + progress * newWidth;
+      } else {
+        offsetRef.current = -newWidth * 1.5;
+      }
+      applyOffset();
     };
+
     const observer = new ResizeObserver(measure);
     observer.observe(group);
     measure();
+
+    const targetSpeed = (direction === "left" ? -1 : 1) * speed;
+    velocityRef.current = targetSpeed;
+
     let frame: number;
     let previous = performance.now();
+
     const tick = (now: number) => {
       const elapsed = Math.min((now - previous) / 1000, 0.05);
       previous = now;
-      if (!motion.matches && !isPausedRef.current && !pointerRef.current) {
-        offsetRef.current += (direction === "left" ? -1 : 1) * speed * elapsed;
-        renderOffset();
+
+      if (!motion.matches && !isPausedRef.current) {
+        if (!pointerRef.current?.dragging) {
+          // Smooth glide / momentum decay towards target speed
+          if (Math.abs(velocityRef.current - targetSpeed) > 0.5) {
+            const friction = Math.exp(-4.5 * elapsed);
+            velocityRef.current = targetSpeed + (velocityRef.current - targetSpeed) * friction;
+          } else {
+            velocityRef.current = targetSpeed;
+          }
+
+          offsetRef.current += velocityRef.current * elapsed;
+          applyOffset();
+        }
       }
+
       frame = requestAnimationFrame(tick);
     };
+
     frame = requestAnimationFrame(tick);
+
     return () => {
       observer.disconnect();
       cancelAnimationFrame(frame);
     };
-  }, [direction, speed]);
+  }, [direction, speed, applyOffset]);
 
   const releasePointer = (event: React.PointerEvent<HTMLDivElement>) => {
-    const currentPointer = pointerRef.current;
+    const pointer = pointerRef.current;
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
       try {
         event.currentTarget.releasePointerCapture(event.pointerId);
@@ -255,9 +297,11 @@ const DraggableMarqueeRow: React.FC<DraggableMarqueeRowProps> = ({
       }
     }
     pointerRef.current = null;
-    // Jika ditekan / diklik tanpa digeser (dragging), jeda atau lanjutkan pergerakan
-    if (currentPointer && !currentPointer.dragging) {
+
+    if (pointer && !pointer.dragging) {
       onTogglePause();
+    } else {
+      velocityRef.current = Math.max(-1200, Math.min(1200, velocityRef.current));
     }
   };
 
@@ -288,8 +332,7 @@ const DraggableMarqueeRow: React.FC<DraggableMarqueeRowProps> = ({
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
         if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
           event.preventDefault();
-          offsetRef.current += event.key === "ArrowLeft" ? 220 : -220;
-          renderOffset();
+          velocityRef.current += event.key === "ArrowLeft" ? -500 : 500;
           return;
         }
         if (event.key === "Enter" || event.key === " ") {
@@ -299,29 +342,67 @@ const DraggableMarqueeRow: React.FC<DraggableMarqueeRowProps> = ({
       }}
       onPointerDown={(event) => {
         if (event.button !== 0 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-        pointerRef.current = { id: event.pointerId, x: event.clientX, y: event.clientY, dragging: false };
+        pointerRef.current = {
+          id: event.pointerId,
+          startX: event.clientX,
+          startY: event.clientY,
+          lastX: event.clientX,
+          lastTime: performance.now(),
+          dragging: false,
+        };
+        velocityRef.current = 0;
       }}
       onPointerMove={(event) => {
         const pointer = pointerRef.current;
         if (!pointer || pointer.id !== event.pointerId) return;
-        const dx = event.clientX - pointer.x;
-        const dy = event.clientY - pointer.y;
+
+        const dx = event.clientX - pointer.lastX;
+        const dy = event.clientY - pointer.startY;
+        const totalDx = event.clientX - pointer.startX;
+
         if (!pointer.dragging) {
-          if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
-          if (Math.abs(dy) > Math.abs(dx)) { pointerRef.current = null; return; }
+          if (Math.abs(totalDx) < 6 && Math.abs(dy) < 6) return;
+          if (Math.abs(dy) > Math.abs(totalDx)) {
+            pointerRef.current = null;
+            return;
+          }
           pointer.dragging = true;
-          event.currentTarget.setPointerCapture(event.pointerId);
+          try {
+            event.currentTarget.setPointerCapture(event.pointerId);
+          } catch {
+            // ignore
+          }
         }
+
+        const now = performance.now();
+        const dt = Math.max((now - pointer.lastTime) / 1000, 0.001);
+        const currentV = dx / dt;
+        velocityRef.current = velocityRef.current * 0.3 + currentV * 0.7;
+
+        pointer.lastX = event.clientX;
+        pointer.lastTime = now;
+
         offsetRef.current += dx;
-        pointer.x = event.clientX;
-        renderOffset();
+        applyOffset();
       }}
       onPointerUp={releasePointer}
       onPointerCancel={cancelPointer}
-      onLostPointerCapture={() => { pointerRef.current = null; }}
-      onPointerLeave={() => { if (!pointerRef.current?.dragging) pointerRef.current = null; }}
+      onLostPointerCapture={() => {
+        pointerRef.current = null;
+      }}
+      onPointerLeave={() => {
+        if (!pointerRef.current?.dragging) pointerRef.current = null;
+      }}
     >
-      <div ref={trackRef} className="product-marquee-track flex w-max will-change-transform">
+      <div
+        ref={trackRef}
+        className="product-marquee-track flex w-max will-change-transform transform-gpu"
+        style={{
+          transform: "translate3d(0, 0, 0)",
+          backfaceVisibility: "hidden",
+          WebkitBackfaceVisibility: "hidden",
+        }}
+      >
         {[0, 1, 2, 3].map((copy) => (
           <div
             key={copy}
@@ -329,7 +410,9 @@ const DraggableMarqueeRow: React.FC<DraggableMarqueeRowProps> = ({
             aria-hidden={copy === 1 ? undefined : true}
             className="product-marquee-group flex shrink-0 gap-3 pr-3 py-2 sm:gap-4 sm:pr-4"
           >
-            {items.map((product) => <MarqueeCard key={product.id} product={product} />)}
+            {items.map((product) => (
+              <MarqueeCard key={`${copy}-${product.id}`} product={product} />
+            ))}
           </div>
         ))}
       </div>
@@ -354,7 +437,7 @@ export const DualRowMarqueeCarousel: React.FC<DualRowMarqueeCarouselProps> = () 
       <DraggableMarqueeRow
         items={ROW_1_ITEMS}
         direction="left"
-        speed={36}
+        speed={42}
         className="mb-5 sm:mb-6"
         isPaused={isPaused}
         onTogglePause={togglePause}
@@ -364,7 +447,7 @@ export const DualRowMarqueeCarousel: React.FC<DualRowMarqueeCarouselProps> = () 
       <DraggableMarqueeRow
         items={ROW_2_ITEMS}
         direction="right"
-        speed={36}
+        speed={42}
         isPaused={isPaused}
         onTogglePause={togglePause}
       />
@@ -373,7 +456,7 @@ export const DualRowMarqueeCarousel: React.FC<DualRowMarqueeCarouselProps> = () 
 };
 
 const MarqueeCard: React.FC<{ product: ProductItem }> = ({ product }) => (
-  <article className="group w-[185px] shrink-0 select-none overflow-hidden rounded-xl border border-[#10233f]/10 bg-white sm:w-[210px] md:w-[230px]">
+  <article className="group w-[185px] shrink-0 select-none overflow-hidden rounded-xl border border-[#10233f]/10 bg-white sm:w-[210px] md:w-[230px] transform-gpu [backface-visibility:hidden] [transform:translateZ(0)]">
     <div className="relative aspect-[4/5] overflow-hidden bg-white">
       <img
         decoding="async"
@@ -382,9 +465,12 @@ const MarqueeCard: React.FC<{ product: ProductItem }> = ({ product }) => (
         alt={product.title}
         width={230}
         height={288}
-        className="h-full w-full object-cover pointer-events-none"
+        className="h-full w-full object-cover pointer-events-none [transform:translateZ(0)]"
       />
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-black/35 to-transparent" />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-black/35 to-transparent"
+      />
     </div>
     <h3 className="px-3 py-3 text-center text-sm font-bold leading-snug text-[#10233f]">{product.title}</h3>
   </article>
