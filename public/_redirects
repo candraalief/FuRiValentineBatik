@@ -1,0 +1,7 @@
+# Cloudflare Pages Redirects
+/koleksi/*        /#koleksi               302
+/collections/*    /#koleksi               302
+/about            /#galeri                302
+/contact          /#kontak                302
+/cara-pemesanan   /#batik-kantor-sekolah  302
+/craftsmanship    /#koleksi               302

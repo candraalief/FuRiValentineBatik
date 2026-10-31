@@ -180,16 +180,17 @@ function App() {
         {/* ─── Hero ─── */}
         <section className="relative pt-20 border-b border-[#10233f]/10 lg:border-b-0" id="beranda">
           <div className="relative mx-auto grid max-w-7xl gap-6 sm:gap-8 px-5 py-8 sm:py-12 lg:grid-cols-[1.04fr_0.96fr] lg:gap-10 lg:px-10 lg:py-16">
-            <div className="z-10 flex flex-col justify-center">
-              <h1 className="max-w-3xl font-serif text-[2.25rem] sm:text-[clamp(2.75rem,5.5vw,4.5rem)] leading-[1.12] sm:leading-[1.08] tracking-[-0.01em]">
-                Batik Bekasi,<br />
+            <div className="z-10 flex flex-col justify-center items-center text-center lg:items-start lg:text-left">
+              <h1 className="max-w-3xl font-serif text-[clamp(1.75rem,7vw,2.25rem)] sm:text-[clamp(2.75rem,5.5vw,4.5rem)] leading-[1.12] sm:leading-[1.08] tracking-[-0.01em]">
+                Batik Bekasi,{" "}
+                <br className="hidden lg:inline" />
                 <span className="italic text-[#c51f5d]">pilihanmu.</span>
               </h1>
-              <p className="mt-4 sm:mt-6 max-w-xl text-sm sm:text-base leading-relaxed text-[#2d3f57] font-normal">
+              <p className="mt-4 sm:mt-6 max-w-xl text-sm sm:text-base leading-relaxed text-[#2d3f57] font-normal mx-auto lg:mx-0">
                 <strong className="font-semibold text-[#10233f]">FuRi Valentine Batik</strong> menyediakan seragam batik sekolah, seragam kantor, atasan wanita, kemeja, kain batik, udeng, dan scarf.
               </p>
             </div>
-            <div className="relative isolate min-h-[360px] sm:min-h-[480px] lg:min-h-[530px]">
+            <div className="relative isolate min-h-[350px] min-[400px]:min-h-[380px] sm:min-h-[480px] lg:min-h-[530px] w-full max-w-[340px] min-[400px]:max-w-[380px] sm:max-w-[460px] lg:max-w-none mx-auto">
               <div className="absolute left-0 top-0 z-10 h-[92%] sm:h-[88%] w-[72%] sm:w-[74%] overflow-hidden">
                 <img
                   className="h-full w-full object-contain sm:object-cover object-center sm:object-top"
